@@ -1,0 +1,42 @@
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { NavComponent } from './estructura/nav/nav.component';
+import { AsideComponent } from './estructura/aside/aside.component';
+import { FooterComponent } from './estructura/footer/footer.component';
+import { PrincipalComponent } from './estructura/principal.component';
+import { DashboardComponent } from './modulos/dashboard/dashboard.component';
+import { CategoriaComponent } from './modulos/categoria/categoria.component';
+import { ProductoComponent } from './modulos/producto/producto.component';
+import { ClienteComponent } from './modulos/cliente/cliente.component';
+import { PedidoComponent } from './modulos/pedido/pedido.component';
+import { UsuarioComponent } from './modulos/usuario/usuario.component';
+import { SoporteComponent } from './modulos/soporte/soporte.component';
+import { CompraComponent } from './modulos/compra/compra.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    NavComponent,
+    AsideComponent,
+    FooterComponent,
+    PrincipalComponent,
+    DashboardComponent,
+    CategoriaComponent,
+    ProductoComponent,
+    ClienteComponent,
+    PedidoComponent,
+    UsuarioComponent,
+    SoporteComponent,
+    CompraComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
