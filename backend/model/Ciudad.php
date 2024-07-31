@@ -34,8 +34,13 @@ class Ciudad {
             VALUES ('$params->nombre', $params->fo_dpto)";
         mysqli_query($this->connection, $insert_city);
         $vec = [];
-        $vec['resultado'] = "OK";
-        $vec['mensaje'] = "Ciudad guardada";
+        if (mysqli_query($this->connection, $insert_city)) {
+            $vec['resultado'] = "OK";
+            $vec['mensaje'] = "Ciudad guardada";
+        } else {
+            $vec['resultado'] = "Error";
+            $vec['mensaje'] = "Error al guardar ciudad " . mysqli_error($this->connection);
+        }
         return $vec;
     }
 

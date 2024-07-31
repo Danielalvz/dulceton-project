@@ -27,8 +27,8 @@ class Departamento {
         return $vec;
     }
 
-    public function postDepartamento($nombre) {
-        $insert_dpto = "INSERT INTO departamento(nombre) VALUES ('$nombre')";
+    public function postDepartamento($params) {
+        $insert_dpto = "INSERT INTO departamento(nombre) VALUES ('$params->nombre')";
         mysqli_query($this->connection, $insert_dpto);
         $vec = [];
         $vec['resultado'] = "OK";
@@ -36,8 +36,8 @@ class Departamento {
         return $vec;
     }
 
-    public function updateDepartamento($id, $nombre) {
-        $update_dpto = "UPDATE departamento SET nombre = '$nombre' WHERE id_departamento = $id";
+    public function updateDepartamento($id, $params) {
+        $update_dpto = "UPDATE departamento SET nombre = '$params->nombre' WHERE id_departamento = $id";
         mysqli_query($this->connection, $update_dpto);
         $vec = [];
         $vec['resultado'] = "OK";

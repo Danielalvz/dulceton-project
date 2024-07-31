@@ -27,8 +27,8 @@ class Tipousuario {
         return $vec;
     }
 
-    public function postTipoUsuario($cargo) {
-        $insert_tipousuario = "INSERT INTO tipousuario(cargo) VALUES ('$cargo')";
+    public function postTipoUsuario($params) {
+        $insert_tipousuario = "INSERT INTO tipousuario(cargo) VALUES ('$params->cargo')";
         mysqli_query($this->connection, $insert_tipousuario);
         $vec = [];
         $vec['resultado'] = "OK";
@@ -36,8 +36,8 @@ class Tipousuario {
         return $vec;
     }
 
-    public function updateTipoUsuario($id, $cargo) {
-        $update_tipousuario = "UPDATE tipousuario SET cargo = '$cargo' WHERE id_tipo_usuario = $id";
+    public function updateTipoUsuario($id, $params) {
+        $update_tipousuario = "UPDATE tipousuario SET cargo = '$params->cargo' WHERE id_tipo_usuario = $id";
         mysqli_query($this->connection, $update_tipousuario);
         $vec = [];
         $vec['resultado'] = "OK";

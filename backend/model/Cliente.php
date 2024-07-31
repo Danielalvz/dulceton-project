@@ -45,8 +45,13 @@ class Cliente {
             telefono = '$params->telefono', email = '$params->email', fo_ciudad = $params->fo_ciudad WHERE id_cliente = $id";
         mysqli_query($this->connection, $update_client);
         $vec = [];
-        $vec['resultado'] = "OK";
-        $vec['mensaje'] = "Cliente actualizado";
+        if (mysqli_query($this->connection, $update_client)) {
+            $vec['resultado'] = "OK";
+            $vec['mensaje'] = "Cliente actualizado";
+        } else {
+            $vec['resultado'] = "Error";
+            $vec['mensaje'] = "Error al actualizar el cliente: " . mysqli_error($this->connection);
+        }
         return $vec;
     }
 
