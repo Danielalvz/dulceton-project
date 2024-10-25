@@ -1,1 +1,38 @@
 <p>usuario works!</p>
+<hr>
+<button class="btn btn-warning">Insertar Usuario</button>
+<div id="formulario">
+
+</div>
+<div id="tabla">
+    <div class="table-responsive">
+        <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-11">
+                <table class="table">
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Password</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>Tipo Usuario</th>
+                    </tr>
+                    <tr *ngFor="let usuario of usuario">
+                        <td>{{usuario.usuario}}</td>
+                        <td>{{usuario.password}}</td>
+                        <td>{{usuario.email}}</td>
+                        <td>{{usuario.telefono}}</td>
+                        <td>{{usuario.tipo_usuario}}</td>
+
+                        <td>
+                            <span class="fas fa-edit" style="color: blue; cursor: pointer;" title="editar"></span>
+                            <span class="fas fa-minus-square" style="color: red; cursor: pointer;" title="borrar"></span>
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>

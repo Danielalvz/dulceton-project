@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CategoriaService } from 'src/app/servicios/categoria.service';
 
 @Component({
   selector: 'app-categoria',
@@ -7,4 +8,17 @@ import { Component } from '@angular/core';
 })
 export class CategoriaComponent {
 
+  categoria: any;
+
+  constructor(private scategoria: CategoriaService) { }
+
+  ngOnInit(): void { //se ejecuta cada vez que cargue el sitio
+    this.consulta();
+  }
+
+  consulta() {
+    this.scategoria.consultarCategorias().subscribe((resultado: any) => {
+      this.categoria = resultado;
+    })
+  }
 }

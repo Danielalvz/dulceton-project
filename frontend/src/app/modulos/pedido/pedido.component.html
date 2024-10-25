@@ -1,1 +1,77 @@
 <p>pedido works!</p>
+<hr>
+<button class="btn btn-warning">Insertar Venta</button>
+<div id="formulario">
+
+</div>
+<div id="tabla">
+    <div class="table-responsive">
+        <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-11">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unitario</th>
+                            <th>Subtotal</th> 
+                            <th>IVA</th>    
+                            <th>Total Venta</th> 
+                            <th>Cliente</th>
+                            <th>Usuario</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Itera sobre las compras -->
+                        <ng-container *ngFor="let venta of ventas">
+                            <!-- Fila principal de la compra -->
+                            <tr>
+                                <!-- Agregar el binding de rowspan -->
+                                <td [attr.rowspan]="venta.detalles.length">{{ venta.fecha }}</td>
+                                
+                                <!-- Si hay detalles, muestra el primero -->
+                                <ng-container *ngIf="venta.detalles.length > 0; else sinDetalles">
+                                    <td>{{ venta.detalles[0].producto }}</td>
+                                    <td>{{ venta.detalles[0].cantidad }}</td>
+                                    <td>{{ venta.detalles[0].precio | currency }}</td>
+                                    <td>{{ venta.detalles[0].cantidad * venta.detalles[0].precio | currency }}</td> 
+                                </ng-container>
+
+                                <!-- En caso de no haber detalles -->
+                                <ng-template #sinDetalles>
+                                    <td colspan="4">Sin detalles</td>
+                                </ng-template>
+
+                                <!-- Agregar el binding de rowspan a las otras columnas -->
+                                <td [attr.rowspan]="venta.detalles.length">{{ venta.iva }}</td>
+                                <td [attr.rowspan]="venta.detalles.length">{{ calcularTotalConIVA(venta) | currency }}</td>
+                                <td [attr.rowspan]="venta.detalles.length">{{ venta.cliente }}</td>
+                                <td [attr.rowspan]="venta.detalles.length">{{ venta.usuario }}</td>
+
+                                <td [attr.rowspan]="venta.detalles.length">
+                                    <span class="fas fa-edit" style="color: blue; cursor: pointer;" title="editar"></span>
+                                    <span class="fas fa-minus-square" style="color: red; cursor: pointer;"
+                                        title="borrar"></span>
+                                </td>
+                            </tr>
+
+                            <!-- Filas adicionales para los detalles restantes -->
+                            <tr *ngFor="let detalle of venta.detalles.slice(1)">
+                                <td>{{ detalle.producto }}</td>
+                                <td>{{ detalle.cantidad }}</td>
+                                <td>{{ detalle.precio | currency }}</td>
+                                <td>{{ detalle.cantidad * detalle.precio | currency }}</td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

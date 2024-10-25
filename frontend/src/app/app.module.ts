@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
 import { AppComponent } from './app.component';
 import { NavComponent } from './estructura/nav/nav.component';
 import { AsideComponent } from './estructura/aside/aside.component';
@@ -15,6 +17,7 @@ import { PedidoComponent } from './modulos/pedido/pedido.component';
 import { UsuarioComponent } from './modulos/usuario/usuario.component';
 import { SoporteComponent } from './modulos/soporte/soporte.component';
 import { CompraComponent } from './modulos/compra/compra.component';
+
 
 @NgModule({
   declarations: [
@@ -34,7 +37,9 @@ import { CompraComponent } from './modulos/compra/compra.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

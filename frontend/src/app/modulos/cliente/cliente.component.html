@@ -1,1 +1,40 @@
 <p>cliente works!</p>
+
+<hr>
+<button class="btn btn-warning">Insertar Cliente</button>
+<div id="formulario">
+
+</div>
+<div id="tabla">
+    <div class="table-responsive">
+        <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-11">
+                <table class="table">
+                    <tr>
+                        <th>Identificación</th>
+                        <th>Nombre</th>
+                        <th>Dirección</th>
+                        <th>Telefono</th>
+                        <th>Correo</th>
+                        <th>Ciudad</th>
+                    </tr>
+                    <tr *ngFor="let cliente of cliente">
+                        <td>{{cliente.identificacion}}</td>
+                        <td>{{cliente.nombre}}</td>
+                        <td>{{cliente.direccion}}</td>
+                        <td>{{cliente.telefono}}</td>
+                        <td>{{cliente.email}}</td>
+                        <td>{{cliente.ciudad}}</td>
+                        <td>
+                            <span class="fas fa-edit" style="color: blue; cursor: pointer;" title="editar"></span>
+                            <span class="fas fa-minus-square" style="color: red; cursor: pointer;" title="borrar"></span>
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
