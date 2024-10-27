@@ -1,8 +1,26 @@
 <p>categoria works!</p>
 <hr>
-<button class="btn btn-warning">Insertar categoria</button>
-<div id="formulario">
-
+<button class="btn btn-warning" (click)="mostrarForm('ver')">Insertar categoria</button>
+<div id="formulario" *ngIf="mform == true">
+    <form>
+        <div class="row">
+            <div class="col-lg-4">
+                <input type="text" id="nombre" placeholder="Nombre de la categoria" class="form-control" name="nombre"
+                    [(ngModel)]="obj_categoria.nombre">
+                <span class="error" *ngIf="validar_nombre == false">Ingrese el nombre de la categoria</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <input type="button" value="Guardar" class="btn btn-primary" style="width: 100%;"
+                    (click)="validarCategoria()">
+            </div>
+            <div class="col-lg-3">
+                <input type="button" value="Cancelar" class="btn btn-secondary" style="width: 100%;"
+                    (click)="mostrarForm('ocultar')">
+            </div>
+        </div>
+    </form>
 </div>
 <div id="tabla">
     <div class="table-responsive">

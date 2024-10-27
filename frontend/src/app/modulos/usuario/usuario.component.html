@@ -1,8 +1,58 @@
 <p>usuario works!</p>
 <hr>
-<button class="btn btn-warning">Insertar Usuario</button>
-<div id="formulario">
-
+<button class="btn btn-warning" (click)="mostrarForm('ver')">Insertar Usuario</button>
+<!-- Formulario -->
+<div id="formulario" *ngIf="mform == true">
+    <form>
+        <div class="row">
+            <div class="col-lg-4">
+                <input type="text" id="usuario" class="form-control" placeholder="Usuario" name="usuario"
+                    [(ngModel)]="obj_usuario.usuario">
+                <span style="color: red;" class="error" *ngIf="validar_usuario == false">Ingrese el
+                    usuario</span>
+            </div>
+            <div class="col-lg-4">
+                <input type="password" id="password" placeholder="Password" class="form-control" name="password"
+                    [(ngModel)]="obj_usuario.password">
+                <span class="error" *ngIf="validar_password == false">Ingrese password para el usuario</span>
+            </div>
+            <div class="col-lg-4">
+                <input type="email" id="email" placeholder="Correo" class="form-control" name="email"
+                    [(ngModel)]="obj_usuario.email">
+                <span class="error" *ngIf="validar_email == false">Ingrese correo</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="input-group">
+                    <input type="text" id="telefono" placeholder="Telefono" class="form-control" name="telefono"
+                        [(ngModel)]="obj_usuario.telefono">
+                    <span class="error" *ngIf="validar_telefono == false">Ingrese telefono</span>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <select id="fo_tipo_usuario" class="form-control form-select" [(ngModel)]="obj_usuario.fo_tipo_usuario"
+                    name="fo_tipo_usuario">
+                    <option [ngValue]="0" label="Seleccione Tipo de Usuario" selected="selected">Seleccione Tipo de
+                        Usuario
+                    </option>
+                    <option *ngFor="let tipousuario of tipoUsuario" [ngValue]="tipousuario.id_tipo_usuario"
+                        label="{{tipousuario.cargo}}"></option>
+                </select>
+                <span class="error" *ngIf="validar_fo_tipo_usuario == false">Seleccione tipo de usuario</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <input type="button" value="Guardar" class="btn btn-primary" style="width: 100%;"
+                    (click)="validarUsuario()">
+            </div>
+            <div class="col-lg-3">
+                <input type="button" value="Cancelar" class="btn btn-secondary" style="width: 100%;"
+                    (click)="mostrarForm('ocultar')">
+            </div>
+        </div>
+    </form>
 </div>
 <div id="tabla">
     <div class="table-responsive">
@@ -26,7 +76,8 @@
 
                         <td>
                             <span class="fas fa-edit" style="color: blue; cursor: pointer;" title="editar"></span>
-                            <span class="fas fa-minus-square" style="color: red; cursor: pointer;" title="borrar"></span>
+                            <span class="fas fa-minus-square" style="color: red; cursor: pointer;"
+                                title="borrar"></span>
 
                         </td>
                     </tr>

@@ -14,9 +14,9 @@
             $vec = $categoria->consultarCategorias();
             break;
         case 'insertar':
-            //http://localhost:8080/dulceton-sena/backend/controlador/CategoriaControlador.php?control=insertar
-            //$json = file_get_contents('php://input');
-            $json = '{"nombre": "Prueba Categoria 3"}';
+            http://localhost:8080/dulceton-sena/backend/controlador/CategoriaControlador.php?control=insertar
+            $json = file_get_contents('php://input');
+            // $json = '{"nombre": "Prueba Categoria 3"}';
             $params = json_decode($json); //convierte en vector
             //print_r($params);
 

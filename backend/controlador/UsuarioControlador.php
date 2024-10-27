@@ -17,8 +17,8 @@
             break;
         case 'insertar':
             // Inserta un nuevo usuario
-            //$json = file_get_contents('php://input');
-            $json = '{"usuario": "LuCorrales", "password": "123456", "email": "lucia.corral@example.com", "telefono": "21651512", "fo_tipo_usuario": 1}';
+            $json = file_get_contents('php://input');
+            // $json = '{"usuario": "LuCorrales", "password": "123456", "email": "lucia.corral@example.com", "telefono": "21651512", "fo_tipo_usuario": 1}';
             $params = json_decode($json);
             $vec = $usuario->insertarUsuario($params);
             break;

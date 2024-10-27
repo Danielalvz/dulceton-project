@@ -51,19 +51,21 @@ export class ProductoComponent {
 
   consultarCategoria() {
     this.scategoria.consultarCategorias().subscribe((resultado: any) => {
-      this.categoria = resultado.map((_: any) => {
-        _.id_categoria = Number(_.id_categoria);
-        return _;
-      });
+      // this.categoria = resultado.map((_: any) => {
+      //   _.id_categoria = Number(_.id_categoria);
+      //   return _;
+      // });
+      this.categoria = resultado;
     })
   }
 
   consultarProveedor() {
     this.sproveedor.consultarProveedores().subscribe((resultado: any) => {
-      this.proveedor = resultado.map((_: any) => {
-        _.id_proveedor = Number(_.id_proveedor);
-        return _;
-      });
+      // this.proveedor = resultado.map((_: any) => {
+      //   _.id_proveedor = Number(_.id_proveedor);
+      //   return _;
+      // });
+      this.proveedor = resultado;
     });
   }
 

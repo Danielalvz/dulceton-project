@@ -1,8 +1,84 @@
 <p>compra works!</p>
 <hr>
-<button class="btn btn-warning">Insertar compra</button>
-<div id="formulario">
+<button class="btn btn-warning" (click)="mostrarForm('ver')">Insertar compra</button>
+<div id="formulario" *ngIf="mform == true">
+    <div class="row">
+        <div class="col-lg-4">
+            <input type="date" id="fecha" class="form-control" placeholder="Fecha de la compra" name="fecha"
+                [(ngModel)]="obj_compras.fecha">
+            <span style="color: red;" class="error" *ngIf="validar_fecha == false">Ingrese la fecha</span>
+        </div>
+        <div class="col-lg-4">
+            <input type="number" id="iva" class="form-control" placeholder="IVA (%)" name="iva"
+                [(ngModel)]="obj_compras.iva">
+            <span style="color: red;" class="error" *ngIf="!validar_iva">Ingrese un IVA válido</span>
+        </div>
+        <div class="col-lg-4">
+            <select id="fo_proveedor" class="form-control form-select" [(ngModel)]="obj_compras.fo_proveedor"
+                name="fo_proveedor">
+                <option [ngValue]="0" label="Seleccione Proveedor" selected="selected">Seleccione Proveedor</option>
+                <option *ngFor="let proveedor of proveedor" [ngValue]="proveedor.id_proveedor"
+                    label="{{proveedor.nombre}}">{{proveedor.nombre}}</option>
+            </select>
+            <span class="error" *ngIf="validar_fo_proveedor == false">Seleccione proveedor</span>
+        </div>
+        <div class="col-lg-4">
+            <select id="fo_usuario" class="form-control form-select" [(ngModel)]="obj_compras.fo_usuario"
+                name="fo_usuario">
+                <option [ngValue]="0" label="Seleccione Usuario" selected="selected">Seleccione Usuario</option>
+                <option *ngFor="let usuario of usuario" [ngValue]="usuario.id_usuario" label="{{usuario.usuario}}">
+                    {{usuario.usuario}}</option>
+            </select>
+            <span class="error" *ngIf="validar_fo_usuario == false">Seleccione usuario</span>
+        </div>
+    </div>
+    <div class="row" *ngFor="let detalle of nuevos_detalles; let i = index">
+        <div class="col-lg-4">
+            <select id="fo_producto" class="form-control form-select" [(ngModel)]="detalle.fo_producto"
+                name="fo_producto">
+                <option [ngValue]="0" label="Seleccione Producto" selected="selected">Seleccione Producto</option>
+                <option *ngFor="let producto of productos" [ngValue]="producto.id_producto" label="{{producto.nombre}}">
+                </option>
+            </select>
+            <span class="error" *ngIf="!validacionesDetalles[i]?.fo_producto">Seleccione un
+                producto</span>
+        </div>
+        <div class="col-lg-4">
+            <input type="number" placeholder="Cantidad" class="form-control" [(ngModel)]="detalle.cantidad"
+                name="cantidad{{i}}">
+            <span style="color: red;" class="error" *ngIf="!validacionesDetalles[i]?.cantidad">Ingrese una cantidad
+                válida</span>
+        </div>
+        <div class="col-lg-4">
+            <input type="number" class="form-control" [(ngModel)]="detalle.precio" placeholder="Precio" name="precio_{{i}}" 
+                   [readonly]="detalle.fo_producto !== 0">
+            <span class="error" *ngIf="!validacionesDetalles[i]?.precio">Ingrese un precio válido</span>
+          </div>
+    </div>
+    <button class="btn btn-primary mt-2" (click)="agregarDetalle()">Agregar otro producto</button>
+    <button class="btn btn-success mt-2" (click)="crearProducto()">Crear nuevo producto</button>
 
+    <div *ngIf="mostrarModalProducto" class="modal">
+        <div class="modal-content">
+          <h3>Agregar nuevo producto</h3>
+          <input type="text" placeholder="Nombre del producto" [(ngModel)]="nuevoProducto.nombre">
+          <input type="number" placeholder="Precio" [(ngModel)]="nuevoProducto.precio">
+          <!-- Aquí puedes agregar más campos para el producto -->
+      
+          <button (click)="guardarNuevoProducto()">Guardar</button>
+          <button (click)="cerrarModalProducto()">Cerrar</button>
+        </div>
+      </div>
+    
+    <!-- Formulario de detalles -->
+    <div *ngFor="let detalle of nuevos_detalles; let i = index">
+        <input type="number" [(ngModel)]="detalle.fo_producto" placeholder="Producto">
+        <input type="number" [(ngModel)]="detalle.cantidad" placeholder="Cantidad">
+        <input type="number" [(ngModel)]="detalle.precio" placeholder="Precio">
+    </div>
+
+    <button (click)="agregarDetalle()">Agregar Producto</button>
+    <button class="btn btn-primary mt-2" (click)="validarCompra()">Guardar Compra</button>
 </div>
 <div id="tabla">
     <div class="table-responsive">
@@ -16,9 +92,9 @@
                             <th>Producto</th>
                             <th>Cantidad</th>
                             <th>Precio Unitario</th>
-                            <th>Subtotal</th> 
-                            <th>IVA</th>    
-                            <th>Total Compra</th> 
+                            <th>Subtotal</th>
+                            <th>IVA</th>
+                            <th>Total Compra</th>
                             <th>Proveedor</th>
                             <th>Usuario</th>
                             <th>Acciones</th>
@@ -31,13 +107,13 @@
                             <tr>
                                 <!-- Agregar el binding de rowspan -->
                                 <td [attr.rowspan]="compra.detalles.length">{{ compra.fecha }}</td>
-                                
+
                                 <!-- Si hay detalles, muestra el primero -->
                                 <ng-container *ngIf="compra.detalles.length > 0; else sinDetalles">
                                     <td>{{ compra.detalles[0].producto }}</td>
                                     <td>{{ compra.detalles[0].cantidad }}</td>
                                     <td>{{ compra.detalles[0].precio | currency }}</td>
-                                    <td>{{ compra.detalles[0].cantidad * compra.detalles[0].precio | currency }}</td> 
+                                    <td>{{ compra.detalles[0].cantidad * compra.detalles[0].precio | currency }}</td>
                                 </ng-container>
 
                                 <!-- En caso de no haber detalles -->
@@ -47,12 +123,14 @@
 
                                 <!-- Agregar el binding de rowspan a las otras columnas -->
                                 <td [attr.rowspan]="compra.detalles.length">{{ compra.iva }}</td>
-                                <td [attr.rowspan]="compra.detalles.length">{{ calcularTotalConIVA(compra) | currency }}</td>
+                                <td [attr.rowspan]="compra.detalles.length">{{ calcularTotalConIVA(compra) | currency }}
+                                </td>
                                 <td [attr.rowspan]="compra.detalles.length">{{ compra.proveedor }}</td>
                                 <td [attr.rowspan]="compra.detalles.length">{{ compra.usuario }}</td>
 
                                 <td [attr.rowspan]="compra.detalles.length">
-                                    <span class="fas fa-edit" style="color: blue; cursor: pointer;" title="editar"></span>
+                                    <span class="fas fa-edit" style="color: blue; cursor: pointer;"
+                                        title="editar"></span>
                                     <span class="fas fa-minus-square" style="color: red; cursor: pointer;"
                                         title="borrar"></span>
                                 </td>
@@ -108,4 +186,3 @@
 
     </div>
 </div>
-

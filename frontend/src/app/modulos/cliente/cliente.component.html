@@ -1,9 +1,62 @@
 <p>cliente works!</p>
 
 <hr>
-<button class="btn btn-warning">Insertar Cliente</button>
-<div id="formulario">
-
+<button class="btn btn-warning" (click)="mostrarForm('ver')">Insertar Cliente</button>
+<!-- Formulario -->
+<div id="formulario" *ngIf="mform == true">
+    <form>
+        <div class="row">
+            <div class="col-lg-4">
+                <input type="text" id="identificacion" class="form-control" placeholder="Documento de identidad"
+                    name="identificacion" [(ngModel)]="obj_cliente.identificacion">
+                <span style="color: red;" class="error" *ngIf="validar_identificacion == false">Ingrese el
+                    número de identificacion</span>
+            </div>
+            <div class="col-lg-4">
+                <input type="text" id="nombre" placeholder="Nombre del cliente" class="form-control" name="nombre"
+                    [(ngModel)]="obj_cliente.nombre">
+                <span class="error" *ngIf="validar_nombre == false">Ingrese el nombre del cliente</span>
+            </div>
+            <div class="col-lg-4">
+                <input type="text" id="direccion" placeholder="Direccion del cliente" class="form-control"
+                    name="direccion" [(ngModel)]="obj_cliente.direccion">
+                <span class="error" *ngIf="validar_direccion == false">Ingrese la dirección del
+                    cliente</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <input type="text" id="telefono" placeholder="Telefono del cliente" class="form-control"
+                    name="telefono" [(ngModel)]="obj_cliente.telefono">
+                <span class="error" *ngIf="validar_telefono == false">Ingrese el teléfono del
+                    cliente</span>
+            </div>
+            <div class="col-lg-4">
+                <input type="email" id="email" placeholder="Correo del cliente" class="form-control" name="email"
+                    [(ngModel)]="obj_cliente.email">
+                <span class="error" *ngIf="validar_email == false">Ingrese el correo del cliente</span>
+            </div>
+            <div class="col-lg-4">
+                <select id="fo_ciudad" class="form-control form-select" [(ngModel)]="obj_cliente.fo_ciudad"
+                    name="fo_ciudad">
+                    <option [ngValue]="0" label="Seleccione Ciudad" selected="selected">Seleccione Ciudad</option>
+                    <option *ngFor="let ciudad of ciudad" [ngValue]="ciudad.id_ciudad"
+                        label="{{ciudad.nombre}}"></option>
+                </select>
+                <span class="error" *ngIf="validar_fo_ciudad == false">Seleccione ciudad</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <input type="button" value="Guardar" class="btn btn-primary" style="width: 100%;"
+                    (click)="validarCliente()">
+            </div>
+            <div class="col-lg-3">
+                <input type="button" value="Cancelar" class="btn btn-secondary" style="width: 100%;"
+                    (click)="mostrarForm('ocultar')">
+            </div>
+        </div>
+    </form>
 </div>
 <div id="tabla">
     <div class="table-responsive">
@@ -28,7 +81,8 @@
                         <td>{{cliente.ciudad}}</td>
                         <td>
                             <span class="fas fa-edit" style="color: blue; cursor: pointer;" title="editar"></span>
-                            <span class="fas fa-minus-square" style="color: red; cursor: pointer;" title="borrar"></span>
+                            <span class="fas fa-minus-square" style="color: red; cursor: pointer;"
+                                title="borrar"></span>
 
                         </td>
                     </tr>

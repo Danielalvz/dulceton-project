@@ -17,8 +17,8 @@
             break;
         case 'insertar':
             // http://localhost:8080/dulceton-sena/backend/controlador/ClienteControlador.php?control=insertar
-            //$json = file_get_contents('php://input');
-            $json = '{"identificacion": "587464", "nombre": "Pablo Perez", "direccion": "Cl wallaci 24", "telefono": "123456789", "email": "pablop@egmail.com", "fo_ciudad": 1}';
+            $json = file_get_contents('php://input');
+            // $json = '{"identificacion": "587464", "nombre": "Pablo Perez", "direccion": "Cl wallaci 24", "telefono": "123456789", "email": "pablop@egmail.com", "fo_ciudad": 1}';
             $params = json_decode($json);
             $vec = $cliente->insertarCliente($params);
             break;

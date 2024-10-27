@@ -17,8 +17,8 @@
             break;
         case 'insertar':
             // http://localhost:8080/dulceton-sena/backend/controlador/TipoUsuarioControlador.php?control=insertar
-            //$json = file_get_contents('php://input');
-            $json = '{"cargo": "Practicante"}';
+            $json = file_get_contents('php://input');
+            // $json = '{"cargo": "Practicante"}';
             $params = json_decode($json);
             $vec = $tipoUsuario->insertarTipoUsuario($params);
             break;

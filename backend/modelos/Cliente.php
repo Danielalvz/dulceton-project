@@ -33,10 +33,14 @@ class Cliente {
         $insertar_cliente = "INSERT INTO cliente(identificacion, nombre, direccion, telefono, email, fo_ciudad)
             VALUES ('$params->identificacion', '$params->nombre', '$params->direccion', '$params->telefono', '$params->email', 
             $params->fo_ciudad)";
-        mysqli_query($this->conexion, $insertar_cliente);
         $vec = [];
-        $vec['resultado'] = "OK";
-        $vec['mensaje'] = "Cliente guardado";
+        if (mysqli_query($this->conexion, $insertar_cliente)) {
+            $vec['resultado'] = "OK";
+            $vec['mensaje'] = "Producto guardado";
+        } else {
+            $vec['resultado'] = "Error";
+            $vec['mensaje'] = "Error al guardar el producto: " . mysqli_error($this->conexion);
+        }
         return $vec;
     }
 
