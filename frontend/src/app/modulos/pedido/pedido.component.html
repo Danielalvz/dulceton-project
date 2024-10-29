@@ -25,19 +25,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Itera sobre las compras -->
                         <ng-container *ngFor="let venta of ventas">
-                            <!-- Fila principal de la compra -->
+                            <!-- Fila principal de la venta -->
                             <tr>
-                                <!-- Agregar el binding de rowspan -->
-                                <td [attr.rowspan]="venta.detalles.length">{{ venta.fecha }}</td>
-                                
+                                <td [attr.rowspan]="venta?.detalles?.length || 1">{{ venta.fecha }}</td>
+
                                 <!-- Si hay detalles, muestra el primero -->
-                                <ng-container *ngIf="venta.detalles.length > 0; else sinDetalles">
+                                <ng-container *ngIf="venta?.detalles?.length > 0; else sinDetalles">
                                     <td>{{ venta.detalles[0].producto }}</td>
                                     <td>{{ venta.detalles[0].cantidad }}</td>
                                     <td>{{ venta.detalles[0].precio | currency }}</td>
-                                    <td>{{ venta.detalles[0].cantidad * venta.detalles[0].precio | currency }}</td> 
+                                    <td>{{ venta.detalles[0].cantidad * venta.detalles[0].precio | currency }}</td>
                                 </ng-container>
 
                                 <!-- En caso de no haber detalles -->
@@ -45,21 +43,18 @@
                                     <td colspan="4">Sin detalles</td>
                                 </ng-template>
 
-                                <!-- Agregar el binding de rowspan a las otras columnas -->
-                                <td [attr.rowspan]="venta.detalles.length">{{ venta.iva }}</td>
-                                <td [attr.rowspan]="venta.detalles.length">{{ calcularTotalConIVA(venta) | currency }}</td>
-                                <td [attr.rowspan]="venta.detalles.length">{{ venta.cliente }}</td>
-                                <td [attr.rowspan]="venta.detalles.length">{{ venta.usuario }}</td>
-
-                                <td [attr.rowspan]="venta.detalles.length">
+                                <td [attr.rowspan]="venta?.detalles?.length || 1">{{ venta.iva }}</td>
+                                <td [attr.rowspan]="venta?.detalles?.length || 1">{{ calcularTotalConIVA(venta) | currency }}</td>
+                                <td [attr.rowspan]="venta?.detalles?.length || 1">{{ venta.cliente }}</td>
+                                <td [attr.rowspan]="venta?.detalles?.length || 1">{{ venta.usuario }}</td>
+                                <td [attr.rowspan]="venta?.detalles?.length || 1">
                                     <span class="fas fa-edit" style="color: blue; cursor: pointer;" title="editar"></span>
-                                    <span class="fas fa-minus-square" style="color: red; cursor: pointer;"
-                                        title="borrar"></span>
+                                    <span class="fas fa-minus-square" style="color: red; cursor: pointer;" title="borrar"></span>
                                 </td>
                             </tr>
 
                             <!-- Filas adicionales para los detalles restantes -->
-                            <tr *ngFor="let detalle of venta.detalles.slice(1)">
+                            <tr *ngFor="let detalle of venta.detalles?.slice(1)">
                                 <td>{{ detalle.producto }}</td>
                                 <td>{{ detalle.cantidad }}</td>
                                 <td>{{ detalle.precio | currency }}</td>
@@ -70,8 +65,8 @@
                 </table>
             </div>
         </div>
-
     </div>
 </div>
+
 
 

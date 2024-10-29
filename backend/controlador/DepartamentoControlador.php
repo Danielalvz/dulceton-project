@@ -15,7 +15,8 @@ switch ($control) {
         break;
     case 'insertar':
         //http://localhost:8080/dulceton-sena/backend/controlador/DepartamentoControlador.php?control=insertar
-        $json = '{"nombre": "Nuevo Departamento"}';
+        $json = file_get_contents('php://input');
+        // $json = '{"nombre": "Nuevo Departamento"}';
         $params = json_decode($json);
         $vec = $departamento->insertarDepartamento($params);
         break;

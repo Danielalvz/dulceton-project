@@ -2,8 +2,8 @@
 header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
-require_once ("../conexion.php");
-require_once ("../modelos/DetalleVenta.php");
+require_once("../conexion.php");
+require_once("../modelos/DetalleVenta.php");
 
 $control = isset($_GET['control']) ? $_GET['control'] : '';
 $detalleVenta = new DetalleVenta($conexion);
@@ -17,8 +17,8 @@ switch ($control) {
         break;
     case 'insertar':
         // URL: http://localhost:8080/dulceton-sena/backend/controlador/DetalleVentaControlador.php?control=insertar
-        //$json = file_get_contents('php://input');
-        $json = '{"cantidad": 10, "precio": 15000.00, "fo_venta": 1, "fo_producto": 2}';
+        $json = file_get_contents('php://input');
+        // $json = '{"cantidad": 10, "precio": 15000.00, "fo_venta": 1, "fo_producto": 2}';
         $params = json_decode($json);
         $vec = $detalleVenta->insertarDetalleVenta($params);
         break;

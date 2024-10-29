@@ -15,7 +15,7 @@ switch ($control) {
         break;
     case 'insertar':
         //http://localhost:8080/dulceton-sena/backend/controlador/CiudadControlador.php?control=insertar
-        $json = '{"nombre": "Nueva Ciudad", "fo_dpto": 3}';
+        // $json = '{"nombre": "Nueva Ciudad", "fo_dpto": 3}';
         $params = json_decode($json);
         $vec = $ciudad->insertarCiudad($params);
         break;

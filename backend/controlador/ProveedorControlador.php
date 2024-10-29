@@ -17,8 +17,8 @@
             break;
         case 'insertar':
             // http://localhost:8080/dulceton-sena/backend/controlador/ProveedorControlador.php?control=insertar
-            //$json = file_get_contents('php://input');
-            $json = '{"razon_social": "1551", "nombre": "Proveedor Ejemplo", "direccion": "Cl 33 no.1-85", "telefono": "555123456", "email": "contacto@proveedorejemplo.com", "fo_ciudad": 2}';
+            $json = file_get_contents('php://input');
+            // $json = '{"razon_social": "1551", "nombre": "Proveedor Ejemplo", "direccion": "Cl 33 no.1-85", "telefono": "555123456", "email": "contacto@proveedorejemplo.com", "fo_ciudad": 2}';
             $params = json_decode($json);
             $vec = $proveedor->insertarProveedor($params);
             break;

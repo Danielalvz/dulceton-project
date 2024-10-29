@@ -40,7 +40,7 @@ export class PedidoComponent {
   }
 
   calcularTotalConIVA(venta: any): number {
-    const subtotal = venta.detalles.reduce((total: number, detalle: any) => total + (detalle.cantidad * detalle.precio), 0);
+    const subtotal = venta?.detalles?.reduce((total: number, detalle: any) => total + (detalle.cantidad * detalle.precio), 0) || 0;
     const iva = (subtotal * venta.iva) / 100;
     return subtotal + iva;
   }

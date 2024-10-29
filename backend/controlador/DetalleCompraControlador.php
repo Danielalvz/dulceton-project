@@ -17,8 +17,8 @@
             break;
         case 'insertar':
             // http://localhost:8080/dulceton-sena/backend/controlador/DetalleCompraControlador.php?control=insertar
-            //$json = file_get_contents('php://input');
-            $json = '{"cantidad": 10, "precio": 5000.00, "fo_compras": 1, "fo_producto": 2}';
+            $json = file_get_contents('php://input');
+            // $json = '{"cantidad": 11, "precio": 5000.00, "fo_compras": 1, "fo_producto": 2}';
             $params = json_decode($json);
             $vec = $detalleCompra->insertarDetalleCompra($params);
             break;
