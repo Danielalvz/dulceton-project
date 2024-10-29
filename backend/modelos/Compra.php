@@ -31,12 +31,30 @@ class Compra {
     }
 
     public function insertarCompra($params) {
+
+
         $insertar_compra = "INSERT INTO compra(fecha, iva, fo_proveedor, fo_usuario)
             VALUES ('$params->fecha', $params->iva, $params->fo_proveedor, $params->fo_usuario)";
         mysqli_query($this->conexion, $insertar_compra);
-        $vec = [];
-        $vec['resultado'] = "OK";
-        $vec['mensaje'] = "Compra guardada";
+
+        $ultimo_ID = mysqli_insert_id($this->conexion);
+
+        $obtener_compra = "SELECT c.id_compra as id_compra, c.iva, p.nombre AS proveedor, u.usuario AS usuario FROM compra c
+            INNER JOIN proveedor p ON c.fo_proveedor = p.id_proveedor
+            INNER JOIN usuario u ON c.fo_usuario = u.id_usuario
+            WHERE c.id_compra = '$ultimo_ID'";
+
+        $query_compra = mysqli_query($this->conexion, $obtener_compra);
+        $row = mysqli_fetch_row($query_compra);
+        $vec = [
+            'id_compra' => $row[0],
+            'iva' => $row[1],
+            'proveedor' => $row[2],
+            'usuario' => $row[3],
+        ];
+        // $vec = [];
+        // $vec['resultado'] = "OK";
+        // $vec['mensaje'] = "Compra guardada";
         return $vec;
     }
 

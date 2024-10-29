@@ -2,14 +2,9 @@
 <hr>
 <!-- <button class="btn btn-warning" (click)="mostrarForm('ver')">Insertar compra</button> -->
 <button class="btn btn-warning" (click)="mostrarForm('ver')">Insertar compra</button>
-<div *ngIf="mform == true">
-  HOLA
-</div>
-
-
-<!-- <form (ngSubmit)="guardarCompra()"> -->
-<!-- Compra -->
-<!-- <div class="row">
+<form *ngIf="mform == true">
+  <!-- Compra -->
+  <div class="row">
     <div class="col-lg-4">
       <label for="fecha">Fecha</label>
       <input type="date" id="fecha" class="form-control" placeholder="Fecha de la compra"
@@ -26,7 +21,7 @@
       <select id="fo_proveedor" class="form-control form-select" [(ngModel)]="obj_compras.fo_proveedor"
         name="proveedor">
         <option [ngValue]="0" label="Seleccione Proveedor" selected="selected">Seleccione Proveedor</option>
-        <option *ngFor="let proveedor of proveedor" [ngValue]="proveedor.id_proveedor" label="{{proveedor.nombre}}">
+        <option *ngFor="let proveedor of proveedores" [ngValue]="proveedor.id_proveedor" label="{{proveedor.nombre}}">
           {{proveedor.nombre}}</option>
       </select>
       <span class="error" *ngIf="validar_fo_proveedor == false">Seleccione proveedor</span>
@@ -35,14 +30,14 @@
       <label>Usuario</label>
       <select id="fo_usuario" class="form-control form-select" [(ngModel)]="obj_compras.fo_usuario" name="usuario">
         <option [ngValue]="0" label="Seleccione Usuario" selected="selected">Seleccione Usuario</option>
-        <option *ngFor="let user of usuario" [ngValue]="user.id_usuario" label="{{user.usuario}}">
+        <option *ngFor="let user of usuarios" [ngValue]="user.id_usuario" label="{{user.usuario}}">
           {{user.usuario}}</option>
       </select>
       <span class="error" *ngIf="validar_fo_usuario == false">Seleccione usuario</span>
     </div>
-  </div> -->
-<!-- Detalles -->
-<!-- <div class="row">
+  </div>
+  <!-- Detalles -->
+  <div class="row">
     <div class="col-lg-4">
       <h3>Agregar Detalle</h3>
       <label>Producto</label>
@@ -78,8 +73,8 @@
     </ul>
   </div>
 
-  <button type="submit" class="btn btn-primary mt-2">Guardar Compra</button>
-</form> -->
+  <button type="submit" class="btn btn-primary mt-2" (click)="guardarCompra()">Guardar Compra</button>
+</form>
 
 <div id="tabla">
   <div class="table-responsive">
@@ -117,17 +112,20 @@
                 </ng-container>
 
                 <!-- En caso de no haber detalles -->
-                <ng-template #sinDetalles >
+                <ng-template #sinDetalles>
                   <td colspan="4" style="text-align: center;">Sin detalles</td>
                 </ng-template>
 
                 <!-- Agregar el binding de rowspan a las otras columnas -->
                 <td [attr.rowspan]="compra.detalles?.length > 0 ? compra.detalles.length : 1">{{ compra.iva }}</td>
-                <td [attr.rowspan]="compra.detalles?.length > 0 ? compra.detalles.length : 1">{{ calcularTotalConIVA(compra) | currency }}</td>
-                <td [attr.rowspan]="compra.detalles?.length > 0 ? compra.detalles.length : 1">{{ compra.proveedor }}</td>
+                <td [attr.rowspan]="compra.detalles?.length > 0 ? compra.detalles.length : 1">{{
+                  calcularTotalConIVA(compra) | currency }}</td>
+                <td [attr.rowspan]="compra.detalles?.length > 0 ? compra.detalles.length : 1">{{ compra.proveedor }}
+                </td>
                 <td [attr.rowspan]="compra.detalles?.length > 0 ? compra.detalles.length : 1">{{ compra.usuario }}</td>
 
-                <td [attr.rowspan]="compra.detalles?.length > 0 ? compra.detalles.length : 1" style="text-align: center; margin: auto; display: flex; gap: 5px; justify-content: center;">
+                <td [attr.rowspan]="compra.detalles?.length > 0 ? compra.detalles.length : 1"
+                  style="text-align: center; margin: auto; display: flex; gap: 5px; justify-content: center;">
                   <span class="fas fa-edit" style="color: blue; cursor: pointer;" title="editar"></span>
                   <span class="fas fa-minus-square" style="color: red; cursor: pointer;" title="borrar"></span>
                 </td>
