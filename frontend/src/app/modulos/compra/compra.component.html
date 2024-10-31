@@ -14,7 +14,7 @@
     <div class="col-lg-4">
       <label>IVA</label>
       <input type="number" id="iva" class="form-control" placeholder="IVA (%)" [(ngModel)]="obj_compras.iva" name="iva">
-      <span style="color: red;" class="error" *ngIf="validar_iva">Ingrese un IVA válido</span>
+      <span style="color: red;" class="error" *ngIf="!validar_iva">Ingrese un IVA válido</span>
     </div>
     <div class="col-lg-4">
       <label>Proveedor</label>
@@ -46,20 +46,19 @@
         <option *ngFor="let prod of productos" [ngValue]="prod.id_producto" label="{{prod.nombre}}">
         </option>
       </select>
-      <span class="error">Seleccione un
-        producto</span>
+      <span class="error" *ngIf="!validar_fo_producto">Seleccione un producto</span>
     </div>
     <div class="col-lg-4">
       <label>Cantidad</label>
       <input type="number" placeholder="Cantidad" class="form-control" [(ngModel)]="nuevoDetalle.cantidad"
         name="cantidad">
-      <span style="color: red;" class="error">Ingrese una cantidad
+      <span style="color: red;" class="error" *ngIf="!validar_cantidad">Ingrese una cantidad
         válida</span>
     </div>
     <div class="col-lg-4">
       <label>Precio</label>
       <input type="number" class="form-control" [(ngModel)]="nuevoDetalle.precio" name="precio">
-      <span class="error">Ingrese un precio válido</span>
+      <span class="error" *ngIf="!validar_precio">Ingrese un precio válido</span>
     </div>
   </div>
   <button class="btn btn-primary mt-2" (click)="agregarDetalle()">Agregar otro producto</button>
@@ -73,7 +72,8 @@
     </ul>
   </div>
 
-  <button type="submit" class="btn btn-primary mt-2" (click)="guardarCompra()">Guardar Compra</button>
+  <button type="submit" class="btn btn-primary mt-2" (click)="validarCompra()">Guardar Compra</button>
+  <button value="Cancelar" class="btn btn-secondary" (click)="mostrarForm('ocultar')">Cancelar</button>
 </form>
 
 <div id="tabla">

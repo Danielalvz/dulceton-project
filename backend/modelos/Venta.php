@@ -7,9 +7,18 @@ class Venta {
     }
 
     public function consultarVentas() {
-        $ventas = "SELECT v.*, c.nombre AS cliente, u.usuario AS usuario FROM venta v
-            INNER JOIN cliente c ON v.fo_cliente = c.id_cliente
-            INNER JOIN usuario u ON v.fo_usuario = u.id_usuario
+        $ventas = "SELECT 
+            v.id_venta AS id_venta,
+            v.fecha AS fecha,
+            v.iva AS iva,
+            v.fo_cliente AS fo_cliente,
+            v.fo_usuario AS fo_usuario,
+            c.nombre AS cliente,
+            u.usuario AS usuario
+            FROM 
+            venta v
+            JOIN cliente c ON v.fo_cliente = c.id_cliente
+            JOIN usuario u ON v.fo_usuario = u.id_usuario
             ORDER BY v.fecha";
         $res = mysqli_query($this->conexion, $ventas);
         $vec = [];
@@ -34,9 +43,22 @@ class Venta {
         $insertar_venta = "INSERT INTO venta(fecha, iva, fo_cliente, fo_usuario)
             VALUES ('$params->fecha', $params->iva, $params->fo_cliente, $params->fo_usuario)";
         mysqli_query($this->conexion, $insertar_venta);
-        $vec = [];
-        $vec['resultado'] = "OK";
-        $vec['mensaje'] = "Venta guardada";
+
+        $ultimo_ID = mysqli_insert_id($this->conexion);
+
+        $obtener_venta = "SELECT v.id_venta as id_venta, v.iva, cl.nombre AS cliente, u.usuario AS usuario FROM venta v
+            INNER JOIN cliente cl ON v.fo_cliente = cl.id_cliente
+            INNER JOIN usuario u ON v.fo_usuario = u.id_usuario
+            WHERE v.id_venta = '$ultimo_ID'";
+
+        $query_venta = mysqli_query($this->conexion, $obtener_venta);
+        $row = mysqli_fetch_row($query_venta);
+        $vec = [
+            'id_venta' => $row[0],
+            'iva' => $row[1],
+            'cliente' => $row[2],
+            'usuario' => $row[3],
+        ];
         return $vec;
     }
 

@@ -1,9 +1,79 @@
 <p>pedido works!</p>
 <hr>
-<button class="btn btn-warning">Insertar Venta</button>
-<div id="formulario">
-
-</div>
+<button class="btn btn-warning" (click)="mostrarForm('ver')">Insertar Venta</button>
+<form *ngIf="mform == true">
+    <!-- Compra -->
+    <div class="row">
+      <div class="col-lg-4">
+        <label for="fecha">Fecha</label>
+        <input type="date" id="fecha" class="form-control" placeholder="Fecha de la compra"
+          [(ngModel)]="obj_ventas.fecha" name="fecha">
+        <span style="color: red;" class="error" *ngIf="validar_fecha == false">Ingrese la fecha</span>
+      </div>
+      <div class="col-lg-4">
+        <label>IVA</label>
+        <input type="number" id="iva" class="form-control" placeholder="IVA (%)" [(ngModel)]="obj_ventas.iva" name="iva">
+        <span style="color: red;" class="error" *ngIf="!validar_iva">Ingrese un IVA válido</span>
+      </div>
+      <div class="col-lg-4">
+        <label>Cliente</label>
+        <select id="fo_cliente" class="form-control form-select" [(ngModel)]="obj_ventas.fo_cliente"
+          name="cliente">
+          <option [ngValue]="0" label="Seleccione Cliente" selected="selected">Seleccione Cliente</option>
+          <option *ngFor="let cliente of clientes" [ngValue]="cliente.id_cliente" label="{{cliente.nombre}}">
+            {{cliente.nombre}}</option>
+        </select>
+        <span class="error" *ngIf="validar_fo_cliente == false">Seleccione cliente</span>
+      </div>
+      <div class="col-lg-4">
+        <label>Usuario</label>
+        <select id="fo_usuario" class="form-control form-select" [(ngModel)]="obj_ventas.fo_usuario" name="usuario">
+          <option [ngValue]="0" label="Seleccione Usuario" selected="selected">Seleccione Usuario</option>
+          <option *ngFor="let user of usuarios" [ngValue]="user.id_usuario" label="{{user.usuario}}">
+            {{user.usuario}}</option>
+        </select>
+        <span class="error" *ngIf="validar_fo_usuario == false">Seleccione usuario</span>
+      </div>
+    </div>
+    <!-- Detalles -->
+    <div class="row">
+      <div class="col-lg-4">
+        <h3>Agregar Detalle</h3>
+        <label>Producto</label>
+        <select id="fo_producto" class="form-control form-select" [(ngModel)]="nuevoDetalle.fo_producto" name="producto">
+          <option [ngValue]="0" label="Seleccione Producto" selected="selected">Seleccione Producto</option>
+          <option *ngFor="let prod of productos" [ngValue]="prod.id_producto" label="{{prod.nombre}}">
+          </option>
+        </select>
+        <span class="error" *ngIf="!validar_fo_producto">Seleccione un producto</span>
+      </div>
+      <div class="col-lg-4">
+        <label>Cantidad</label>
+        <input type="number" placeholder="Cantidad" class="form-control" [(ngModel)]="nuevoDetalle.cantidad"
+          name="cantidad">
+        <span style="color: red;" class="error" *ngIf="!validar_cantidad">Ingrese una cantidad
+          válida</span>
+      </div>
+      <div class="col-lg-4">
+        <label>Precio</label>
+        <input type="number" class="form-control" [(ngModel)]="nuevoDetalle.precio" name="precio">
+        <span class="error" *ngIf="!validar_precio">Ingrese un precio válido</span>
+      </div>
+    </div>
+    <button class="btn btn-primary mt-2" (click)="agregarDetalle()">Agregar otro producto</button>
+  
+    <div>
+      <h3>Detalles Agregados</h3>
+      <ul>
+        <li *ngFor="let detalle of obj_ventas.detalles">
+          Producto ID: {{ detalle.fo_producto }}, Cantidad: {{ detalle.cantidad }}, Precio: {{ detalle.precio }}
+        </li>
+      </ul>
+    </div>
+  
+    <button type="submit" class="btn btn-primary mt-2" (click)="validarVenta()">Guardar Compra</button>
+    <button value="Cancelar" class="btn btn-secondary" (click)="mostrarForm('ocultar')">Cancelar</button>
+  </form>
 <div id="tabla">
     <div class="table-responsive">
         <div class="row">

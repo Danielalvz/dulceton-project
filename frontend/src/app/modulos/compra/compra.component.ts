@@ -36,7 +36,7 @@ export class CompraComponent {
   validar_fo_proveedor = true;
   validar_fo_usuario = true;
 
-  valdiar_fo_producto = true;
+  validar_fo_producto = true;
   validar_cantidad = true;
   validar_precio = true;
 
@@ -129,65 +129,96 @@ export class CompraComponent {
   }
 
   guardarCompra() {
-    if (this.validarCompra()) {
 
-      this.scompras.insertarCompra(this.obj_compras).subscribe((datos: any) => {
-        console.log("Datos recibidos de la API:", datos);
-        console.log("Objeto compras");
+    this.scompras.insertarCompra(this.obj_compras).subscribe(async (datos: any) => {
+      console.log("Datos recibidos de la API:", datos);
+      console.log("Objeto compras");
 
-        console.log(this.obj_compras);
-        console.log("s compras");
-        console.log(this.scompras);
+      console.log(this.obj_compras);
+      console.log("s compras");
+      console.log(this.scompras);
 
-        if (datos != null) {
-          const idCompra = datos.id_compra; // Obtener el ID de la compra creada
+      if (datos != null) {
+        const idCompra = datos.id_compra; 
 
-          console.log("ID COMPRA ANTES DE GUARDARDETALLES");
-          console.log(idCompra);
+        console.log("ID COMPRA ANTES DE GUARDARDETALLES");
+        console.log(idCompra);
 
-          this.guardarDetallesCompra(idCompra); // Guardar los detalles de la compra
-        } else {
-          alert("Error al guardar la compra: " + datos.mensaje); // Mensaje de error más específico
-        }
+        await this.guardarDetallesCompra(idCompra); 
+      } else {
+        alert("Error al guardar la compra: " + datos.mensaje); 
       }
-      );
-    } else {
-      alert("Por favor, complete todos los campos necesarios.");
+      console.log(this.obj_compras);
     }
-    console.log(this.obj_compras);
+    );
   }
 
 
-  guardarDetallesCompra(idCompra: number) {
+
+
+  async guardarDetallesCompra(idCompra: number) {
     console.log("COMPRAS ANTES DE GUARDAR DETALLES");
     console.log(this.obj_compras);
 
 
     const detallesConIdCompra = this.obj_compras.detalles.map((detalle) => ({
       ...detalle,
-      fo_compras: Number(idCompra) // Asegúrate de que la clave foránea está incluida
+      fo_compras: Number(idCompra) 
     }));
 
     console.log("DETALLES CON ID COMPRA:");
 
     console.log(detallesConIdCompra);
 
-    this.sdetalle.insertarDetalleCompra(detallesConIdCompra).subscribe(() => {
-      this.limpiar();
-      this.consulta(); // Actualiza la lista de compras
-    });
+    for (let detalle of detallesConIdCompra) {
+      await this.sdetalle.insertarDetalleCompra(detalle).toPromise()
+
+    }
+    // this.sdetalle.insertarDetalleCompra(detallesConIdCompra).subscribe(() => {
+    this.limpiar();
+    this.consulta(); // Actualiza la lista de compras
+    // });
   }
 
 
-  // Validaciones para la compra
-  validarCompra(): boolean {
-    return (
-      this.obj_compras.fecha.trim() !== '' &&
-      this.obj_compras.iva > 0 &&
-      this.obj_compras.fo_proveedor > 0 &&
-      this.obj_compras.fo_usuario > 0 &&
-      this.obj_compras.detalles.length > 0 // Asegúrate de que haya detalles
-    );
+  // // Validaciones para la compra
+  // validarCompra(): boolean {
+  validarCompra() {
+    this.validar_iva = this.obj_compras.iva > 0;
+    console.log("Iva:", this.validar_iva);
+
+
+    this.validar_fecha = this.obj_compras.fecha.trim() !== "";
+    console.log("Fecha:", this.validar_fecha);
+
+
+    this.validar_fo_proveedor = this.obj_compras.fo_proveedor !== 0;
+    console.log("FO_PROVEEDOR", this.validar_fo_proveedor);
+
+
+    this.validar_fo_usuario = this.obj_compras.fo_usuario > 0;
+    console.log("FO_USUARIO:", this.validar_fo_usuario);
+    
+
+    this.validar_fo_producto = this.obj_compras.detalles.length > 0 || this.nuevoDetalle.fo_producto > 0;
+    console.log("FO_PRODUCTO:",this.validar_fo_producto);
+
+    this.validar_cantidad =  this.obj_compras.detalles.length > 0 || this.nuevoDetalle.cantidad > 0;
+  this.validar_precio =  this.obj_compras.detalles.length > 0 || this.nuevoDetalle.precio > 0;
+    
+
+    if (this.validar_iva && this.validar_fecha && this.validar_fo_proveedor && this.validar_fo_usuario && this.validar_fo_producto) {
+      this.guardarCompra();
+      alert("Compra guardada")
+    }
+
+    // return (
+    //   this.obj_compras.fecha.trim() !== '' &&
+    //   this.obj_compras.iva > 0 &&
+    //   this.obj_compras.fo_proveedor > 0 &&
+    //   this.obj_compras.fo_usuario > 0 &&
+    //   this.obj_compras.detalles.length > 0 
+    // );
   }
 
   limpiar() {
