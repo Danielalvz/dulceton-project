@@ -71,6 +71,8 @@
                         <th>Telefono</th>
                         <th>Correo</th>
                         <th>Ciudad</th>
+                        <th>Acciones</th>
+
                     </tr>
                     <tr *ngFor="let cliente of cliente">
                         <td>{{cliente.identificacion}}</td>
@@ -82,7 +84,7 @@
                         <td>
                             <span class="fas fa-edit" style="color: blue; cursor: pointer;" title="editar"></span>
                             <span class="fas fa-minus-square" style="color: red; cursor: pointer;"
-                                title="borrar"></span>
+                                title="borrar" (click)="eliminar(cliente.id_cliente)"></span>
 
                         </td>
                     </tr>

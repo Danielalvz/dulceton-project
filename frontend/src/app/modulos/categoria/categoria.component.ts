@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CategoriaService } from 'src/app/servicios/categoria.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-categoria',
@@ -67,5 +68,45 @@ export class CategoriaComponent {
     });
     this.limpiar();
     this.mostrarForm("ocultar");
+  }
+
+  eliminar(id: number) {
+    Swal.fire({
+      title: "¿Está seguro de eliminar esta categoría?",
+      text: "El proceso no podrá ser revertido.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, Eliminar!",
+      cancelButtonText: "Cancelar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Llamar al servicio para eliminar la categoría
+        this.scategoria.eliminarCategoria(id).subscribe((datos: any) => {
+          if (datos['resultado'] === 'OK') {
+            Swal.fire({
+              title: "Eliminado!",
+              text: "Tu categoría ha sido eliminada.",
+              icon: "success"
+            });
+            this.consulta(); 
+          } else {
+            Swal.fire({
+              title: "Error",
+              text: datos.mensaje, 
+              icon: "error"
+            });
+          }
+        }, (error) => {
+          Swal.fire({
+            title: "Error",
+            text: "No se pudo completar la solicitud. Intente nuevamente.",
+            icon: "error"
+          });
+        });
+      }
+    });
+
   }
 }

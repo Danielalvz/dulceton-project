@@ -36,7 +36,7 @@
                         <td>{{item.nombre}}</td>
                         <td>
                             <span class="fas fa-edit" style="color: blue; cursor: pointer;" title="editar"></span>
-                            <span class="fas fa-minus-square" style="color: red; cursor: pointer;" title="borrar"></span>
+                            <span class="fas fa-minus-square" style="color: red; cursor: pointer;" title="borrar" (click)="eliminar(item.id_categoria)"></span>
 
                         </td>
                     </tr>

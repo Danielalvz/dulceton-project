@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CiudadService } from 'src/app/servicios/ciudad.service';
 import { ClienteService } from 'src/app/servicios/cliente.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cliente',
@@ -103,4 +104,43 @@ export class ClienteComponent {
     this.limpiar();
     this.mostrarForm("ocultar");
   }
+
+  eliminar(id: number) {
+    Swal.fire({
+        title: "¿Está seguro de eliminar este cliente?",
+        text: "El proceso no podrá ser revertido.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, Eliminar!",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            this.scliente.eliminarCliente(id).subscribe((datos: any) => {
+                if (datos['resultado'] === 'OK') {
+                    Swal.fire({
+                        title: "Eliminado!",
+                        text: "El cliente ha sido eliminado.",
+                        icon: "success"
+                    });
+                    this.consulta(); 
+                } else {
+                    Swal.fire({
+                        title: "Error",
+                        text: datos.mensaje, 
+                        icon: "error"
+                    });
+                }
+            }, (error) => {
+                Swal.fire({
+                    title: "Error",
+                    text: "No se pudo completar la solicitud. Intente nuevamente.",
+                    icon: "error"
+                });
+            });
+        }
+    });
+}
+
 }

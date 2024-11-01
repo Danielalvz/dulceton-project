@@ -3,6 +3,9 @@ import { CategoriaService } from 'src/app/servicios/categoria.service';
 import { ProductoService } from 'src/app/servicios/producto.service';
 import { ProveedorService } from 'src/app/servicios/proveedor.service';
 
+import Swal from 'sweetalert2';
+
+
 @Component({
   selector: 'app-producto',
   templateUrl: './producto.component.html',
@@ -135,4 +138,46 @@ export class ProductoComponent {
     this.limpiar();
     this.mostrarForm("ocultar");
   }
+
+  eliminar(id: number) {
+    Swal.fire({
+      title: "¿Está seguro de eliminar este producto?",
+      text: "El proceso no podrá ser revertido.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminar!",
+      cancelButtonText: "Cancelar"
+  }).then((result) => {
+      if (result.isConfirmed) {
+          this.sproducto.eliminarProducto(id).subscribe((datos: any) => {
+              if (datos.resultado === 'OK') {
+                  Swal.fire({
+                      title: "Eliminado!",
+                      text: "El producto ha sido eliminado.",
+                      icon: "success"
+                  });
+                  this.consulta(); 
+              } else {
+                  Swal.fire({
+                      title: "Error",
+                      text: datos.mensaje, 
+                      icon: "error"
+                  });
+              }
+          });
+      }
+  });
+
+  }
+
+  // mostrarAlerta(titulo: string, mensaje: string) {
+  //   Swal.fire({
+  //     title: titulo,
+  //     text: mensaje,
+  //     icon: titulo === 'Éxito' ? 'success' : 'error',
+  //     confirmButtonText: 'Aceptar'
+  //   });
+  // }
 }

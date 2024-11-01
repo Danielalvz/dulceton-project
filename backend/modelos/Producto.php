@@ -1,12 +1,13 @@
 <?php
-class Producto {
+class Producto
+{
     public $conexion;
 
     public function __construct($conexion) {
         $this->conexion = $conexion;
     }
 
-    public function consultarProductos() {
+    public function consultarProductos()  {
         $productos = "SELECT p .* , c.nombre AS categoria, pr.nombre AS proveedor FROM producto p
             INNER JOIN categoria c ON p.fo_categoria = c.id_categoria
             INNER JOIN proveedor pr ON p.fo_proveedor = pr.id_proveedor
@@ -22,17 +23,42 @@ class Producto {
     }
 
     public function eliminarProducto($id) {
-        $eliminar_producto = "DELETE FROM producto WHERE id_producto = $id";
-        mysqli_query($this->conexion, $eliminar_producto);
-        $vec = [];
-        if (mysqli_query($this->conexion, $eliminar_producto)) {
-            $vec['resultado'] = "OK";
-            $vec['mensaje'] = "El producto ha sido eliminado";
-        } else {
-            $vec['resultado'] = "Error";
-            $vec['mensaje'] = "Error al eliminar el producto: " . mysqli_error($this->conexion);
+        // $eliminar_detallecompra = "DELETE FROM detallecompra WHERE fo_producto = $id";
+        // mysqli_query($this->conexion, $eliminar_detallecompra);
+
+        // $eliminar_detalleventa = "DELETE FROM detalleventa WHERE fo_producto = $id";
+        // mysqli_query($this->conexion, $eliminar_detalleventa);
+
+        // Comprobar si hay registros relacionados en otras tablas
+        $verificar_detalle_compra = "SELECT COUNT(*) as count FROM detallecompra WHERE fo_producto = $id";
+        $resultado_compra = mysqli_query($this->conexion, $verificar_detalle_compra);
+        $fila_compra = mysqli_fetch_assoc($resultado_compra);
+
+        $verificar_detalle_venta = "SELECT COUNT(*) as count FROM detalleventa WHERE fo_producto = $id";
+        $resultado_venta = mysqli_query($this->conexion, $verificar_detalle_venta);
+        $fila_venta = mysqli_fetch_assoc($resultado_venta);
+
+        // Si hay registros relacionados, no se puede eliminar
+        if ($fila_compra['count'] > 0 || $fila_venta['count'] > 0) {
+            return [
+                'resultado' => 'Error',
+                'mensaje' => 'No se puede eliminar el producto porque está relacionado con otros registros.'
+            ];
         }
-        return $vec;
+
+        // Intentar eliminar el producto
+        $eliminar_producto = "DELETE FROM producto WHERE id_producto = $id";
+        if (mysqli_query($this->conexion, $eliminar_producto)) {
+            return [
+                'resultado' => 'OK',
+                'mensaje' => 'El producto ha sido eliminado.'
+            ];
+        } else {
+            return [
+                'resultado' => 'Error',
+                'mensaje' => 'Error al eliminar el producto: ' . mysqli_error($this->conexion)
+            ];
+        }
     }
 
     public function insertarProducto($params) {
@@ -66,7 +92,7 @@ class Producto {
         return $vec;
     }
 
-    public function buscarProducto($valor) {
+    public function buscarProducto($valor)  {
         $buscar_producto = "SELECT p .* , c.nombre AS categoria, pr.nombre AS proveedor FROM producto p
             INNER JOIN categoria c ON p.fo_categoria = c.id_categoria
             INNER JOIN proveedor pr ON p.fo_proveedor = pr.id_proveedor

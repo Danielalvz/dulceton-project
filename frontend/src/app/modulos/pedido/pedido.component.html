@@ -60,7 +60,7 @@
         <span class="error" *ngIf="!validar_precio">Ingrese un precio válido</span>
       </div>
     </div>
-    <button class="btn btn-primary mt-2" (click)="agregarDetalle()">Agregar otro producto</button>
+    <button class="btn btn-primary mt-2" (click)="agregarDetalle()">Agregar producto</button>
   
     <div>
       <h3>Detalles Agregados</h3>
@@ -119,7 +119,7 @@
                                 <td [attr.rowspan]="venta?.detalles?.length || 1">{{ venta.usuario }}</td>
                                 <td [attr.rowspan]="venta?.detalles?.length || 1">
                                     <span class="fas fa-edit" style="color: blue; cursor: pointer;" title="editar"></span>
-                                    <span class="fas fa-minus-square" style="color: red; cursor: pointer;" title="borrar"></span>
+                                    <span class="fas fa-minus-square" style="color: red; cursor: pointer;" title="borrar" (click)="eliminar(venta.id_venta)"></span>
                                 </td>
                             </tr>
 

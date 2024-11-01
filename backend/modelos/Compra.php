@@ -22,11 +22,25 @@ class Compra {
     }
 
     public function eliminarCompra($id) {
+        // $eliminar_compra = "DELETE FROM compra WHERE id_compra = $id";
+        // mysqli_query($this->conexion, $eliminar_compra);
+        // $vec = [];
+        // $vec['resultado'] = "OK";
+        // $vec['mensaje'] = "La compra ha sido eliminada";
+        // return $vec;
+
+        // Primero, eliminamos los detalles de compra relacionados
+        $eliminar_detalles = "DELETE FROM detalleCompra WHERE fo_compras = $id";
+        mysqli_query($this->conexion, $eliminar_detalles);
+
+        // Luego, eliminamos la compra
         $eliminar_compra = "DELETE FROM compra WHERE id_compra = $id";
         mysqli_query($this->conexion, $eliminar_compra);
+
+        // Preparar la respuesta
         $vec = [];
         $vec['resultado'] = "OK";
-        $vec['mensaje'] = "La compra ha sido eliminada";
+        $vec['mensaje'] = "La compra y sus detalles han sido eliminados";
         return $vec;
     }
 

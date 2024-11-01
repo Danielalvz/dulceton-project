@@ -31,12 +31,32 @@ class Venta {
     }
 
     public function eliminarVenta($id) {
-        $eliminar_venta = "DELETE FROM venta WHERE id_venta = $id";
-        mysqli_query($this->conexion, $eliminar_venta);
+        // $eliminar_venta = "DELETE FROM venta WHERE id_venta = $id";
+        // mysqli_query($this->conexion, $eliminar_venta);
+        // $vec = [];
+        // $vec['resultado'] = "OK";
+        // $vec['mensaje'] = "La venta ha sido eliminada";
+        // return $vec;
+        // Eliminar los detalles asociados a la venta
+    $eliminar_detalle = "DELETE FROM detalleVenta WHERE fo_venta = $id";
+    mysqli_query($this->conexion, $eliminar_detalle);
+
+    // Ahora eliminar la venta
+    $eliminar_venta = "DELETE FROM venta WHERE id_venta = $id";
+    mysqli_query($this->conexion, $eliminar_venta);
+
+    // Comprobar si la eliminación fue exitosa
+    if (mysqli_affected_rows($this->conexion) > 0) {
         $vec = [];
         $vec['resultado'] = "OK";
-        $vec['mensaje'] = "La venta ha sido eliminada";
+        $vec['mensaje'] = "La venta y sus detalles han sido eliminados.";
         return $vec;
+    } else {
+        $vec = [];
+        $vec['resultado'] = "ERROR";
+        $vec['mensaje'] = "No se pudo eliminar la venta. Puede que no exista.";
+        return $vec;
+    }
     }
 
     public function insertarVenta($params) {

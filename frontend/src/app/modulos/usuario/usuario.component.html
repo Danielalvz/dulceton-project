@@ -66,6 +66,8 @@
                         <th>Correo</th>
                         <th>Teléfono</th>
                         <th>Tipo Usuario</th>
+                        <th>Acciones</th>
+
                     </tr>
                     <tr *ngFor="let usuario of usuario">
                         <td>{{usuario.usuario}}</td>
@@ -77,7 +79,7 @@
                         <td>
                             <span class="fas fa-edit" style="color: blue; cursor: pointer;" title="editar"></span>
                             <span class="fas fa-minus-square" style="color: red; cursor: pointer;"
-                                title="borrar"></span>
+                                title="borrar" (click)="eliminar(usuario.id_usuario)"></span>
 
                         </td>
                     </tr>

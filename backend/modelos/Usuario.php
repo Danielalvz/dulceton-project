@@ -21,13 +21,45 @@ class Usuario {
     }
 
     public function eliminarUsuario($id) {
+        // $eliminar_usuario = "DELETE FROM usuario WHERE id_usuario = $id";
+        // mysqli_query($this->conexion, $eliminar_usuario);
+        // $vec = [];
+        // $vec['resultado'] = "OK";
+        // $vec['mensaje'] = "El usuario ha sido eliminado";
+        // return $vec;
+
+         // Verificar si hay registros relacionados en la tabla venta
+        $verificar_ventas = "SELECT COUNT(*) as count FROM venta WHERE fo_usuario = $id"; 
+        $resultado_ventas = mysqli_query($this->conexion, $verificar_ventas);
+        $fila_ventas = mysqli_fetch_assoc($resultado_ventas);
+
+        // Verificar si hay registros relacionados en la tabla compra
+        $verificar_compras = "SELECT COUNT(*) as count FROM compra WHERE fo_usuario = $id"; 
+        $resultado_compras = mysqli_query($this->conexion, $verificar_compras);
+        $fila_compras = mysqli_fetch_assoc($resultado_compras);
+
+        // Si hay registros relacionados en ventas o compras, no se puede eliminar
+        if ($fila_ventas['count'] > 0 || $fila_compras['count'] > 0) {
+            return [
+                'resultado' => 'Error',
+                'mensaje' => 'No se puede eliminar el usuario porque está relacionado con otras ventas o compras.'
+            ];
+        }
+
+        // Intentar eliminar el usuario
         $eliminar_usuario = "DELETE FROM usuario WHERE id_usuario = $id";
-        mysqli_query($this->conexion, $eliminar_usuario);
-        $vec = [];
-        $vec['resultado'] = "OK";
-        $vec['mensaje'] = "El usuario ha sido eliminado";
-        return $vec;
-    }
+            if (mysqli_query($this->conexion, $eliminar_usuario)) {
+                return [
+                    'resultado' => 'OK',
+                    'mensaje' => 'El usuario ha sido eliminado.'
+                ];
+            } else {
+                return [
+                    'resultado' => 'Error',
+                    'mensaje' => 'Error al eliminar el usuario: ' . mysqli_error($this->conexion)
+                ];
+            }
+        }
 
     public function insertarUsuario($params) {
         $insertar_usuario = "INSERT INTO usuario(usuario, password, email, telefono, fo_tipo_usuario)
