@@ -1,6 +1,8 @@
 <?php
     header('Access-Control-Allow-Origin: *');
     header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS"); 
+    header("Access-Control-Allow-Headers: Content-Type, Authorization"); 
 
     require_once ("../conexion.php");
     require_once ("../modelos/Usuario.php");
@@ -29,8 +31,8 @@
             break;
         case 'editar':
             // http://localhost:8080/dulceton-sena/backend/controlador/UsuarioControlador.php?control=editar&id=6
-            //$json = file_get_contents('php://input');
-            $json = '{"usuario": "Carmin", "password": "123456", "email": "carmin@thebear.com", "telefono": "221564154", "fo_tipo_usuario": 1}';
+            $json = file_get_contents('php://input');
+            // $json = '{"usuario": "Carmin", "password": "123456", "email": "carmin@thebear.com", "telefono": "221564154", "fo_tipo_usuario": 1}';
             $params = json_decode($json);
             $id = $_GET['id'];
             $vec = $usuario->editarUsuario($id, $params);

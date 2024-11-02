@@ -3,6 +3,7 @@
 <button class="btn btn-warning" (click)="mostrarForm('ver')">Insertar categoria</button>
 <div id="formulario" *ngIf="mform == true">
     <form>
+        <h1 *ngIf="botonesForm">Editar Categoria</h1>
         <div class="row">
             <div class="col-lg-4">
                 <input type="text" id="nombre" placeholder="Nombre de la categoria" class="form-control" name="nombre"
@@ -12,8 +13,8 @@
         </div>
         <div class="row">
             <div class="col-lg-3">
-                <input type="button" value="Guardar" class="btn btn-primary" style="width: 100%;"
-                    (click)="validarCategoria()">
+                <input type="button" value="Guardar" class="btn btn-primary" style="width: 100%;" (click)="validarCategoria('guardar')" *ngIf="!botonesForm">
+                    <input type="button" value="Editar" class="btn btn-primary" style="width: 100%;" (click)="validarCategoria('editar')" *ngIf="botonesForm" >
             </div>
             <div class="col-lg-3">
                 <input type="button" value="Cancelar" class="btn btn-secondary" style="width: 100%;"
@@ -35,8 +36,8 @@
                     <tr *ngFor="let item of categoria">
                         <td>{{item.nombre}}</td>
                         <td>
-                            <span class="fas fa-edit" style="color: blue; cursor: pointer;" title="editar"></span>
-                            <span class="fas fa-minus-square" style="color: red; cursor: pointer;" title="borrar" (click)="eliminar(item.id_categoria)"></span>
+                            <span class="fas fa-edit" style="color: blue; cursor: pointer;" title="Editar" (click)="cargarDatos(item, item.id_categoria)"></span>
+                            <span class="fas fa-minus-square" style="color: red; cursor: pointer;" title="Eliminar" (click)="eliminar(item.id_categoria)"></span>
 
                         </td>
                     </tr>

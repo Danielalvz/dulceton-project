@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { CategoriaService } from 'src/app/servicios/categoria.service';
 import { ProductoService } from 'src/app/servicios/producto.service';
 import { ProveedorService } from 'src/app/servicios/proveedor.service';
+import { Producto } from './producto.model';
 
 import Swal from 'sweetalert2';
-
 
 @Component({
   selector: 'app-producto',
@@ -16,8 +16,9 @@ export class ProductoComponent {
   producto: any;
   categoria: any;
   proveedor: any;
+  idProducto: any;
 
-  obj_producto = {
+  obj_producto: Producto = {
     codigo: "",
     nombre: "",
     fo_categoria: 0,
@@ -36,7 +37,9 @@ export class ProductoComponent {
   validar_stock = true;
   validar_venta_al_publico = true;
   validar_fo_proveedor = true;
+
   mform = false;
+  botonesForm = false;
 
   constructor(private sproducto: ProductoService, private scategoria: CategoriaService, private sproveedor: ProveedorService) { }
 
@@ -54,20 +57,12 @@ export class ProductoComponent {
 
   consultarCategoria() {
     this.scategoria.consultarCategorias().subscribe((resultado: any) => {
-      // this.categoria = resultado.map((_: any) => {
-      //   _.id_categoria = Number(_.id_categoria);
-      //   return _;
-      // });
       this.categoria = resultado;
     })
   }
 
   consultarProveedor() {
     this.sproveedor.consultarProveedores().subscribe((resultado: any) => {
-      // this.proveedor = resultado.map((_: any) => {
-      //   _.id_proveedor = Number(_.id_proveedor);
-      //   return _;
-      // });
       this.proveedor = resultado;
     });
   }
@@ -78,7 +73,10 @@ export class ProductoComponent {
         this.mform = true;
         break;
       case "ocultar":
+        this.limpiar();
         this.mform = false;
+        this.botonesForm = false;
+        this.limpiarMensajesError();
         break;
     }
   }
@@ -96,8 +94,19 @@ export class ProductoComponent {
     }
   }
 
+  limpiarMensajesError() {
+    this.validar_codigo = true;
+    this.validar_nombre = true;
+    this.validar_fo_categoria = true;
+    this.validar_valor_compra = true;
+    this.validar_valor_venta = true;
+    this.validar_stock = true;
+    this.validar_venta_al_publico = true;
+    this.validar_fo_proveedor = true;
+  }
 
-  validarProducto() {
+
+  validarProducto(funcion: any) {
     console.log("Valor inicial de venta_al_publico:", this.obj_producto.venta_al_publico); // <-- Agrega aquí para ver el valor inicial
 
     this.validar_codigo = this.obj_producto.codigo.trim() !== "";
@@ -117,9 +126,12 @@ export class ProductoComponent {
 
     this.validar_fo_proveedor = this.obj_producto.fo_proveedor !== 0;
 
-    if (this.validar_codigo && this.validar_fo_categoria && this.validar_fo_proveedor && this.validar_nombre && this.validar_stock && this.validar_valor_compra && this.validar_valor_venta && this.validar_venta_al_publico) {
+    if (this.validar_codigo && this.validar_fo_categoria && this.validar_fo_proveedor && this.validar_nombre && this.validar_stock && this.validar_valor_compra && this.validar_valor_venta && this.validar_venta_al_publico && funcion == "guardar") {
       this.guardarProducto();
+    }
 
+    if (this.validar_codigo && this.validar_fo_categoria && this.validar_fo_proveedor && this.validar_nombre && this.validar_stock && this.validar_valor_compra && this.validar_valor_venta && this.validar_venta_al_publico && funcion == "editar") {
+      this.editar();
     }
   }
 
@@ -149,35 +161,56 @@ export class ProductoComponent {
       cancelButtonColor: "#d33",
       confirmButtonText: "Sí, eliminar!",
       cancelButtonText: "Cancelar"
-  }).then((result) => {
+    }).then((result) => {
       if (result.isConfirmed) {
-          this.sproducto.eliminarProducto(id).subscribe((datos: any) => {
-              if (datos.resultado === 'OK') {
-                  Swal.fire({
-                      title: "Eliminado!",
-                      text: "El producto ha sido eliminado.",
-                      icon: "success"
-                  });
-                  this.consulta(); 
-              } else {
-                  Swal.fire({
-                      title: "Error",
-                      text: datos.mensaje, 
-                      icon: "error"
-                  });
-              }
-          });
+        this.sproducto.eliminarProducto(id).subscribe((datos: any) => {
+          if (datos.resultado === 'OK') {
+            Swal.fire({
+              title: "Eliminado!",
+              text: "El producto ha sido eliminado.",
+              icon: "success"
+            });
+            this.consulta();
+          } else {
+            Swal.fire({
+              title: "Error",
+              text: datos.mensaje,
+              icon: "error"
+            });
+          }
+        });
       }
-  });
+    });
 
   }
 
-  // mostrarAlerta(titulo: string, mensaje: string) {
-  //   Swal.fire({
-  //     title: titulo,
-  //     text: mensaje,
-  //     icon: titulo === 'Éxito' ? 'success' : 'error',
-  //     confirmButtonText: 'Aceptar'
-  //   });
-  // }
+  cargarDatos(items: any, id: number) {
+    this.limpiarMensajesError();
+
+    this.obj_producto = {
+      codigo: items.codigo,
+      nombre: items.nombre,
+      fo_categoria: items.fo_categoria,
+      valor_compra: items.valor_compra,
+      valor_venta: items.valor_venta,
+      stock: items.stock,
+      venta_al_publico: items.venta_al_publico !== null ? Number(items.venta_al_publico) : null,
+      fo_proveedor: items.fo_proveedor
+    }
+
+    this.idProducto = id;
+    this.botonesForm = true;
+    this.mostrarForm('ver');
+  }
+
+  editar() {
+    this.sproducto.editarProducto(this.idProducto, this.obj_producto).subscribe((datos: any) => {
+      if (datos['resultado'] == "OK") {
+        this.consulta();
+      }
+    });
+
+    this.limpiar();
+    this.mostrarForm("ocultar");
+  }
 }

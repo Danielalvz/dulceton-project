@@ -29,4 +29,8 @@ export class CompraService {
   buscarCompra(dato:any) {
     return this.http.get(`${this.url}?control=buscar&dato=${dato}`);
   }
+
+  buscarCompraPorId(id:number) {
+    return this.http.get(`${this.url}?control=buscarid&id=${id}`);
+  }
 }

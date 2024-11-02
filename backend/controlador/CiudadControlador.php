@@ -1,6 +1,8 @@
 <?php
 header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS"); 
+header("Access-Control-Allow-Headers: Content-Type, Authorization"); 
 
 require_once("../conexion.php");
 require_once("../modelos/Ciudad.php");
@@ -26,7 +28,8 @@ switch ($control) {
         break;
     case 'editar':
         //http://localhost:8080/dulceton-sena/backend/controlador/CiudadControlador.php?control=editar&id=34
-        $json = '{"nombre": "Ciudad Actualizada", "fo_dpto": 4}';
+        // $json = '{"nombre": "Ciudad Actualizada", "fo_dpto": 4}';
+        $json = file_get_contents('php://input');
         $params = json_decode($json);
         $id = $_GET['id'];
         $vec = $ciudad->editarCiudad($id, $params);

@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 export class CategoriaComponent {
 
   categoria: any;
+  idCategoria: any;
 
   obj_categoria = {
     nombre: ""
@@ -17,6 +18,7 @@ export class CategoriaComponent {
 
   validar_nombre = true;
   mform = false;
+  botonesForm = false;
 
   constructor(private scategoria: CategoriaService) { }
 
@@ -36,7 +38,10 @@ export class CategoriaComponent {
         this.mform = true;
         break;
       case "ocultar":
+        this.limpiar();
         this.mform = false;
+        this.botonesForm = false;
+        this.validar_nombre = true;
         break;
     }
   }
@@ -47,11 +52,15 @@ export class CategoriaComponent {
     }
   }
 
-  validarCategoria() {
+  validarCategoria(funcion: any) {
     this.validar_nombre = this.obj_categoria.nombre.trim() !== "";
 
-    if (this.validar_nombre) {
+    if (this.validar_nombre && funcion == "guardar") {
       this.guardarCategoria();
+    }
+
+    if (this.validar_nombre && funcion == "editar") {
+      this.editar();
     }
   }
 
@@ -109,4 +118,28 @@ export class CategoriaComponent {
     });
 
   }
+
+  cargarDatos(items: any, id: number) {
+    this.validar_nombre = true;
+
+    this.obj_categoria = {
+      nombre: items.nombre
+    }
+
+    this.idCategoria = id;
+    this.botonesForm = true;
+    this.mostrarForm('ver');
+  }
+
+  editar() {
+    this.scategoria.editarCategoria(this.idCategoria, this.obj_categoria).subscribe((datos: any) => {
+      if (datos['resultado'] == "OK") {
+        this.consulta();
+      }
+    });
+
+    this.limpiar();
+    this.mostrarForm("ocultar");
+  }
+
 }

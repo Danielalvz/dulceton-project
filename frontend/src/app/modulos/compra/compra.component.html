@@ -3,6 +3,7 @@
 <!-- <button class="btn btn-warning" (click)="mostrarForm('ver')">Insertar compra</button> -->
 <button class="btn btn-warning" (click)="mostrarForm('ver')">Insertar compra</button>
 <form *ngIf="mform == true">
+  <h1 *ngIf="botonesForm">Editar Compra</h1>
   <!-- Compra -->
   <div class="row">
     <div class="col-lg-4">
@@ -63,16 +64,55 @@
   </div>
   <button class="btn btn-primary mt-2" (click)="agregarDetalle()">Agregar producto</button>
 
+  <h3>Detalles Agregados</h3>
+  <table class="table table-striped">
+      <thead>
+          <tr>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Precio</th>
+              <th>Total</th>
+              <th>Acciones</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let detalle of obj_compras.detalles">
+              <td>{{ detalle.producto }}</td>
+              <td>{{ detalle.cantidad }}</td>
+              <td>{{ detalle.precio }}</td>
+              <td>{{ detalle.cantidad * detalle.precio }}</td>
+              <td>
+                  <button (click)="cargarDetalle(detalle)" [disabled]="deshabilitarEdicion">Editar</button>
+                  <button (click)="cancelarDetalle(detalle)" *ngIf="botonCancelar">Cancelar</button>
+                  <button (click)="eliminarDetalle(detalle.id_detalle_compra)">Eliminar</button>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+  <!-- Detalles Agregados -->
   <div>
     <h3>Detalles Agregados</h3>
     <ul>
       <li *ngFor="let detalle of obj_compras.detalles">
+        <p>Detalle ID: {{ detalle.id_detalle_compra }}</p> 
         Producto ID: {{ detalle.fo_producto }}, Cantidad: {{ detalle.cantidad }}, Precio: {{ detalle.precio }}
+        Producto: {{ detalle.producto}}, Cantidad: {{ detalle.cantidad }}, Precio: {{ detalle.precio }}
+
+        
+        <button (click)="cargarDetalle(detalle)" [disabled]="deshabilitarEdicion">Editar</button>
+        <button (click)="cancelarDetalle(detalle)">Cancelar</button>
+        <button (click)="eliminarDetalle(detalle.id_detalle_compra)" class="btn btn-danger btn-sm">Eliminar</button>
       </li>
     </ul>
   </div>
 
-  <button type="submit" class="btn btn-primary mt-2" (click)="validarCompra()">Guardar Compra</button>
+
+  <button (click)="validarCompra('editarDetalle')">Guardar detalle</button>
+
+  <button type="submit" class="btn btn-primary mt-2" (click)="validarCompra('guardar')" *ngIf="!botonesForm">Guardar
+    Compra</button>
+  <input type="button" value="Editar" class="btn btn-primary" style="width: 100%;" (click)="validarCompra('editar')"
+    *ngIf="botonesForm">
   <button value="Cancelar" class="btn btn-secondary" (click)="mostrarForm('ocultar')">Cancelar</button>
 </form>
 
@@ -126,8 +166,10 @@
 
                 <td [attr.rowspan]="compra.detalles?.length > 0 ? compra.detalles.length : 1"
                   style="text-align: center; margin: auto; display: flex; gap: 5px; justify-content: center;">
-                  <span class="fas fa-edit" style="color: blue; cursor: pointer;" title="editar"></span>
-                  <span class="fas fa-minus-square" style="color: red; cursor: pointer;" title="borrar" (click)="eliminar(compra.id_compra)"></span>
+                  <span class="fas fa-edit" style="color: blue; cursor: pointer;" title="Editar"
+                    (click)="cargarDatos(compra, compra.id_compra)"></span>
+                  <span class="fas fa-minus-square" style="color: red; cursor: pointer;" title="Eliminar"
+                    (click)="eliminar(compra.id_compra)"></span>
                 </td>
               </tr>
 

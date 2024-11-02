@@ -4,6 +4,7 @@
 <!-- Formulario -->
 <div id="formulario" *ngIf="mform == true">
     <form>
+        <h1 *ngIf="botonesForm">Editar Producto</h1>
         <div class="row">
             <div class="col-lg-4">
                 <input type="text" id="codigo" class="form-control" placeholder="Código del producto" name="codigo"
@@ -55,7 +56,8 @@
                 <label for="venta_al_publico">¿Venta al público?</label>
                 <select id="venta_al_publico" class="form-control form-select"
                     [(ngModel)]="obj_producto.venta_al_publico" name="venta_al_publico">
-                    <option [ngValue]="null" label="Seleccione disponibilidad para la venta" disabled selected="selected">Seleccione Disponibilidad</option>
+                    <option [ngValue]="null" label="Seleccione disponibilidad para la venta" disabled
+                        selected="selected">Seleccione Disponibilidad</option>
                     <option [ngValue]="1">Sí</option>
                     <option [ngValue]="0">No</option>
                 </select>
@@ -72,7 +74,9 @@
             </div>
             <div class="col-lg-3">
                 <input type="button" value="Guardar" class="btn btn-primary" style="width: 100%;"
-                    (click)="validarProducto()">
+                    (click)="validarProducto('guardar')" *ngIf="!botonesForm">
+                <input type="button" value="Editar" class="btn btn-primary" style="width: 100%;"
+                    (click)="validarProducto('editar')" *ngIf="botonesForm">
             </div>
             <div class="col-lg-3">
                 <input type="button" value="Cancelar" class="btn btn-secondary" style="width: 100%;"
@@ -108,9 +112,10 @@
                         <td>{{item.venta_al_publico}}</td>
                         <td>{{item.proveedor}}</td>
                         <td>
-                            <span class="fas fa-edit" style="color: blue; cursor: pointer;" title="editar"></span>
-                            <span class="fas fa-minus-square" style="color: red; cursor: pointer;"
-                                title="eliminar" (click)="eliminar(item.id_producto)"></span>
+                            <span class="fas fa-edit" style="color: blue; cursor: pointer;" title="Editar"
+                                (click)="cargarDatos(item, item.id_producto)"></span>
+                            <span class="fas fa-minus-square" style="color: red; cursor: pointer;" title="Eliminar"
+                                (click)="eliminar(item.id_producto)"></span>
 
                         </td>
                     </tr>

@@ -95,5 +95,19 @@ class Compra {
         }
         return $vec;
     }
+
+    public function buscarCompraPorID($id) {
+        $buscar_compra_id = "SELECT c.*, p.nombre AS proveedor, u.usuario AS usuario FROM compra c
+            INNER JOIN proveedor p ON c.fo_proveedor = p.id_proveedor
+            INNER JOIN usuario u ON c.fo_usuario = u.id_usuario
+            WHERE c.id_compra = $id";
+        $res = mysqli_query($this->conexion, $buscar_compra_id);
+        $vec = [];
+        
+        while ($row = mysqli_fetch_array($res)) {
+            $vec[] = $row;
+        }
+        return $vec;
+    }
 }
 ?>

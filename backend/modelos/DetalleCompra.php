@@ -41,8 +41,12 @@ class DetalleCompra {
     }
 
     public function editarDetalleCompra($id, $params) {
-        $editar_detalle = "UPDATE detalleCompra SET cantidad = $params->cantidad, precio = $params->precio,
-            fo_compras = $params->fo_compras, fo_producto = $params->fo_producto WHERE id_detalle_compra = $id";
+        $editar_detalle = "UPDATE 
+            detalleCompra SET 
+            cantidad = $params->cantidad, 
+            precio = $params->precio, 
+            fo_producto = $params->fo_producto 
+            WHERE id_detalle_compra = $id";
         mysqli_query($this->conexion, $editar_detalle);
         $vec = [];
         $vec['resultado'] = "OK";
@@ -63,5 +67,22 @@ class DetalleCompra {
         }
         return $vec;
     }
+
+    
+    public function buscarDetallesCompraPorId($id) {
+        $buscar_detalle = "SELECT dc.*, c.fecha AS compra_fecha, p.nombre AS producto FROM detalleCompra dc
+            INNER JOIN compra c ON dc.fo_compras = c.id_compra
+            INNER JOIN producto p ON dc.fo_producto = p.id_producto
+            WHERE c.id_compra = $id";
+        $res = mysqli_query($this->conexion, $buscar_detalle);
+        $vec = [];
+        
+        while ($row = mysqli_fetch_array($res)) {
+            $vec[] = $row;
+        }
+        return $vec;
+    }
+
+    
 }
 ?>

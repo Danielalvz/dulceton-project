@@ -5,6 +5,7 @@
 <!-- Formulario -->
 <div id="formulario" *ngIf="mform == true">
     <form>
+        <h1 *ngIf="botonesForm">Editar Cliente</h1>
         <div class="row">
             <div class="col-lg-4">
                 <input type="text" id="identificacion" class="form-control" placeholder="Documento de identidad"
@@ -48,8 +49,8 @@
         </div>
         <div class="row">
             <div class="col-lg-3">
-                <input type="button" value="Guardar" class="btn btn-primary" style="width: 100%;"
-                    (click)="validarCliente()">
+                <input type="button" value="Guardar" class="btn btn-primary" style="width: 100%;" (click)="validarCliente('guardar')" *ngIf="!botonesForm">
+                <input type="button" value="Editar" class="btn btn-primary" style="width: 100%;" (click)="validarCliente('editar')" *ngIf="botonesForm" >
             </div>
             <div class="col-lg-3">
                 <input type="button" value="Cancelar" class="btn btn-secondary" style="width: 100%;"
@@ -82,9 +83,9 @@
                         <td>{{cliente.email}}</td>
                         <td>{{cliente.ciudad}}</td>
                         <td>
-                            <span class="fas fa-edit" style="color: blue; cursor: pointer;" title="editar"></span>
+                            <span class="fas fa-edit" style="color: blue; cursor: pointer;" title="Editar" (click)="cargarDatos(cliente, cliente.id_cliente)"></span>
                             <span class="fas fa-minus-square" style="color: red; cursor: pointer;"
-                                title="borrar" (click)="eliminar(cliente.id_cliente)"></span>
+                                title="Eliminar" (click)="eliminar(cliente.id_cliente)"></span>
 
                         </td>
                     </tr>

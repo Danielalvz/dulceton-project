@@ -29,4 +29,8 @@ export class DetalleVentaService {
   buscarDetalleVenta(dato:any) {
     return this.http.get(`${this.url}?control=buscar&dato=${dato}`);
   }
+
+  buscarDetallesVentaPorId(id: number) {
+    return this.http.get(`${this.url}?control=buscarid&id=${id}`);
+  }
 }

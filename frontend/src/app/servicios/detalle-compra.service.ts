@@ -29,4 +29,8 @@ export class DetalleCompraService {
   buscarDetalleCompra(dato:any) {
     return this.http.get(`${this.url}?control=buscar&dato=${dato}`);
   }
+
+  buscarDetallesCompraPorId(id:number) {
+    return this.http.get(`${this.url}?control=buscarid&id=${id}`);
+  }
 }

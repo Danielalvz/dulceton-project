@@ -1,6 +1,8 @@
 <?php
     header('Access-Control-Allow-Origin: *');
     header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS"); 
+    header("Access-Control-Allow-Headers: Content-Type, Authorization"); 
 
     require_once ("../conexion.php");
     require_once ("../modelos/Cliente.php");
@@ -29,8 +31,8 @@
             break;
         case 'editar':
             // http://localhost:8080/dulceton-sena/backend/controlador/ClienteControlador.php?control=editar&id=3
-            //$json = file_get_contents('php://input');
-            $json = '{"identificacion": "2654541", "nombre": "Cliente Editado", "direccion": "Nueva Dirección", "telefono": "987654321", "email": "clienteeditado@example.com", "fo_ciudad": 2}';
+            $json = file_get_contents('php://input');
+            // $json = '{"identificacion": "2654541", "nombre": "Cliente Editado", "direccion": "Nueva Dirección", "telefono": "987654321", "email": "clienteeditado@example.com", "fo_ciudad": 2}';
             $params = json_decode($json);
             $id = $_GET['id'];
             $vec = $cliente->editarCliente($id, $params);

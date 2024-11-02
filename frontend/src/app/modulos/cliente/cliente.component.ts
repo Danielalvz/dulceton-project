@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 export class ClienteComponent {
   cliente: any;
   ciudad: any;
+  idCliente: any;
 
   obj_cliente = {
     identificacion: "",
@@ -28,6 +29,7 @@ export class ClienteComponent {
   validar_email = true;
   validar_fo_ciudad = true;
   mform = false;
+  botonesForm = false;
 
   constructor(private scliente: ClienteService, private sciudad: CiudadService) { }
 
@@ -54,7 +56,10 @@ export class ClienteComponent {
         this.mform = true;
         break;
       case "ocultar":
+        this.limpiar();
         this.mform = false;
+        this.botonesForm = false;
+        this.limpiarMensajesError();
         break;
     }
   }
@@ -70,7 +75,16 @@ export class ClienteComponent {
     }
   }
 
-  validarCliente() {
+  limpiarMensajesError() {
+    this.validar_identificacion = true;
+    this.validar_nombre = true;
+    this.validar_direccion = true;
+    this.validar_telefono = true;
+    this.validar_email = true;
+    this.validar_fo_ciudad = true;
+  }
+
+  validarCliente(funcion: any) {
 
     this.validar_identificacion = this.obj_cliente.identificacion.trim() !== "";
 
@@ -84,9 +98,12 @@ export class ClienteComponent {
 
     this.validar_fo_ciudad = this.obj_cliente.fo_ciudad !== 0;
 
-    if (this.validar_identificacion && this.validar_nombre && this.validar_direccion && this.validar_telefono && this.validar_email && this.validar_fo_ciudad) {
+    if (this.validar_identificacion && this.validar_nombre && this.validar_direccion && this.validar_telefono && this.validar_email && this.validar_fo_ciudad && funcion == "guardar") {
       this.guardarCliente();
+    }
 
+    if (this.validar_identificacion && this.validar_nombre && this.validar_direccion && this.validar_telefono && this.validar_email && this.validar_fo_ciudad && funcion == "editar") {
+      this.editar();
     }
   }
 
@@ -107,40 +124,68 @@ export class ClienteComponent {
 
   eliminar(id: number) {
     Swal.fire({
-        title: "¿Está seguro de eliminar este cliente?",
-        text: "El proceso no podrá ser revertido.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Sí, Eliminar!",
-        cancelButtonText: "Cancelar"
+      title: "¿Está seguro de eliminar este cliente?",
+      text: "El proceso no podrá ser revertido.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, Eliminar!",
+      cancelButtonText: "Cancelar"
     }).then((result) => {
-        if (result.isConfirmed) {
-            this.scliente.eliminarCliente(id).subscribe((datos: any) => {
-                if (datos['resultado'] === 'OK') {
-                    Swal.fire({
-                        title: "Eliminado!",
-                        text: "El cliente ha sido eliminado.",
-                        icon: "success"
-                    });
-                    this.consulta(); 
-                } else {
-                    Swal.fire({
-                        title: "Error",
-                        text: datos.mensaje, 
-                        icon: "error"
-                    });
-                }
-            }, (error) => {
-                Swal.fire({
-                    title: "Error",
-                    text: "No se pudo completar la solicitud. Intente nuevamente.",
-                    icon: "error"
-                });
+      if (result.isConfirmed) {
+        this.scliente.eliminarCliente(id).subscribe((datos: any) => {
+          if (datos['resultado'] === 'OK') {
+            Swal.fire({
+              title: "Eliminado!",
+              text: "El cliente ha sido eliminado.",
+              icon: "success"
             });
-        }
+            this.consulta();
+          } else {
+            Swal.fire({
+              title: "Error",
+              text: datos.mensaje,
+              icon: "error"
+            });
+          }
+        }, (error) => {
+          Swal.fire({
+            title: "Error",
+            text: "No se pudo completar la solicitud. Intente nuevamente.",
+            icon: "error"
+          });
+        });
+      }
     });
-}
+  }
+
+  cargarDatos(items: any, id: number) {
+    this.limpiarMensajesError();
+    
+    this. obj_cliente = {
+      identificacion: items.identificacion,
+      nombre: items.nombre,
+      direccion: items.direccion,
+      telefono: items.telefono,
+      email: items.email,
+      fo_ciudad: items.fo_ciudad
+    }
+
+    this.idCliente = id;
+    this.botonesForm = true;
+    this.mostrarForm('ver');
+  }
+
+  editar() {
+    this.scliente.editarCliente(this.idCliente, this.obj_cliente).subscribe((datos: any) => {
+      if (datos['resultado'] == "OK") {
+        this.consulta();
+      }
+    });
+
+    this.limpiar();
+    this.mostrarForm("ocultar");
+  }
 
 }
