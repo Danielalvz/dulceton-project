@@ -17,6 +17,8 @@ import { PedidoComponent } from './modulos/pedido/pedido.component';
 import { UsuarioComponent } from './modulos/usuario/usuario.component';
 import { SoporteComponent } from './modulos/soporte/soporte.component';
 import { CompraComponent } from './modulos/compra/compra.component';
+import { LoginComponent } from './modulos/login/login.component';
+import { NoEncontroComponent } from './modulos/no-encontro/no-encontro.component';
 
 
 @NgModule({
@@ -33,7 +35,9 @@ import { CompraComponent } from './modulos/compra/compra.component';
     PedidoComponent,
     UsuarioComponent,
     SoporteComponent,
-    CompraComponent
+    CompraComponent,
+    LoginComponent,
+    NoEncontroComponent
   ],
   imports: [
     BrowserModule,

@@ -9,23 +9,30 @@ import { PedidoComponent } from './modulos/pedido/pedido.component';
 import { UsuarioComponent } from './modulos/usuario/usuario.component';
 import { SoporteComponent } from './modulos/soporte/soporte.component';
 import { CompraComponent } from './modulos/compra/compra.component';
+import { LoginComponent } from './modulos/login/login.component';
+import { NoEncontroComponent } from './modulos/no-encontro/no-encontro.component';
+import { validarUserGuard } from './guard/validar-user.guard';
 
 const routes: Routes = [
   {
     path: '', component: PrincipalComponent,
     children:
       [
-        { path: 'dashboard', component: DashboardComponent },
-        { path: 'categoria', component: CategoriaComponent },
-        { path: 'producto', component: ProductoComponent },
-        { path: 'cliente', component: ClienteComponent },
-        { path: 'pedido', component: PedidoComponent },
-        { path: 'compra', component: CompraComponent },
-        { path: 'usuario', component: UsuarioComponent },
-        { path: 'soporte', component: SoporteComponent },
+        { path: 'dashboard', component: DashboardComponent, canActivate: [validarUserGuard] },
+        { path: 'categoria', component: CategoriaComponent, canActivate: [validarUserGuard] },
+        { path: 'producto', component: ProductoComponent, canActivate: [validarUserGuard] },
+        { path: 'cliente', component: ClienteComponent, canActivate: [validarUserGuard] },
+        { path: 'pedido', component: PedidoComponent, canActivate: [validarUserGuard] },
+        { path: 'compra', component: CompraComponent, canActivate: [validarUserGuard] },
+        { path: 'usuario', component: UsuarioComponent, canActivate: [validarUserGuard] },
+        { path: 'soporte', component: SoporteComponent, canActivate: [validarUserGuard] },
         { path: '', redirectTo: 'dashboard', pathMatch: 'full'}
       ]
-  }
+  },
+
+  {path: 'login', component: LoginComponent},
+  {path: '**', component: NoEncontroComponent}
+
 ];
 
 @NgModule({

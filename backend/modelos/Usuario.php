@@ -21,13 +21,6 @@ class Usuario {
     }
 
     public function eliminarUsuario($id) {
-        // $eliminar_usuario = "DELETE FROM usuario WHERE id_usuario = $id";
-        // mysqli_query($this->conexion, $eliminar_usuario);
-        // $vec = [];
-        // $vec['resultado'] = "OK";
-        // $vec['mensaje'] = "El usuario ha sido eliminado";
-        // return $vec;
-
          // Verificar si hay registros relacionados en la tabla venta
         $verificar_ventas = "SELECT COUNT(*) as count FROM venta WHERE fo_usuario = $id"; 
         $resultado_ventas = mysqli_query($this->conexion, $verificar_ventas);
@@ -91,6 +84,33 @@ class Usuario {
         while ($row = mysqli_fetch_array($res)) {
             $vec[] = $row;
         }
+        return $vec;
+    }
+
+    public function buscarUsuarioPorCorreoYClave($email, $password) {
+        // Generar el hash SHA-1 de la clave en PHP
+        $hashedPassword = sha1($password);
+
+        $buscar_usuario = "SELECT 
+            u.*, tu.cargo AS tipo_usuario 
+            FROM usuario u
+            INNER JOIN tipousuario tu ON u.fo_tipo_usuario = tu.id_tipo_usuario
+            WHERE u.email = '$email' AND u.password = '$hashedPassword'";
+
+            
+        $res = mysqli_query($this->conexion, $buscar_usuario);
+        $vec = [];
+        
+        while ($row = mysqli_fetch_array($res)) {
+            $vec[] = $row;
+        }
+        
+        if ($vec == []) {
+            $vec[0] = array("validar" => "no valida");
+        } else {
+            $vec[0]['validar'] = "valida";
+        }
+
         return $vec;
     }
 }

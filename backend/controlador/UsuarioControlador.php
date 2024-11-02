@@ -1,11 +1,11 @@
 <?php
     header('Access-Control-Allow-Origin: *');
     header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS"); 
-    header("Access-Control-Allow-Headers: Content-Type, Authorization"); 
+    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-    require_once ("../conexion.php");
-    require_once ("../modelos/Usuario.php");
+    require_once("../conexion.php");
+    require_once("../modelos/Usuario.php");
 
     $control = $_GET['control'];
     $usuario = new Usuario($conexion);
@@ -41,6 +41,13 @@
             // http://localhost:8080/dulceton-sena/backend/controlador/UsuarioControlador.php?control=buscar&dato=a
             $dato = $_GET['dato'];
             $vec = $usuario->buscarUsuario($dato);
+            break;
+        case 'login':
+            // http://localhost:8080/dulceton-sena/backend/controlador/UsuarioControlador.php?control=login&email=armandorincon@gmail.com&password=contrasena123
+            $email = $_GET['email'];
+            $password = $_GET['password'];
+
+            $vec = $usuario -> buscarUsuarioPorCorreoYClave($email, $password);
             break;
     }
 

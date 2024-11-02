@@ -6,5 +6,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./aside.component.scss']
 })
 export class AsideComponent {
+  nombre: any;
+  cargo: any;
 
+  constructor() {}
+
+  ngOnInit() {
+    this.nombre = sessionStorage.getItem("usuario");
+    this.cargo = sessionStorage.getItem("tipo_usuario");
+  }
 }

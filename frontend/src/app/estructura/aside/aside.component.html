@@ -15,7 +15,7 @@
                 <i class="fas fa-user-circle fa-2x img-circle elevation-2"></i>
             </div>
             <div class="info ml-3">
-                <a href="#" class="d-block">Administrador</a>
+                <a href="#" class="d-block">{{cargo}}</a>
             </div>
         </div>
 
@@ -33,7 +33,7 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngIf="cargo == 'Administrador' || cargo == 'Jefe de compras'">
                     <a [routerLink]="['/categoria']" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
@@ -41,7 +41,7 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngIf="cargo == 'Administrador' || cargo == 'Vendedor' || cargo == 'Practicante'">
                     <a [routerLink] = "['/pedido']" class="nav-link">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>
@@ -70,7 +70,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngIf="cargo == 'Administrador' || cargo == 'Vendedor' || cargo == 'Jefe de compras'">
                     <a [routerLink] = "['/producto']" class="nav-link">
                         <i class="nav-icon fas fa-tag"></i>
                         <p>
@@ -93,7 +93,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngIf="cargo == 'Administrador' || cargo == 'Vendedor' || cargo == 'Practicante'">
                     <a [routerLink] = "['/cliente']" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
@@ -117,7 +117,7 @@
                     </ul>
                 </li>
                 
-                <li class="nav-item">
+                <li class="nav-item" *ngIf="cargo == 'Administrador' || cargo == 'Jefe de compras'">
                     <a [routerLink]="['/compra']" class="nav-link">
                         <i class="nav-icon fas fa-shopping-bag"></i>
                         <p>
@@ -146,7 +146,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngIf="cargo == 'Administrador'">
                     <a [routerLink] = "['/usuario']"  class="nav-link">
                         <i class="nav-icon fas fa-briefcase"></i>
                         <p>
