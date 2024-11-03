@@ -19,6 +19,7 @@ import { SoporteComponent } from './modulos/soporte/soporte.component';
 import { CompraComponent } from './modulos/compra/compra.component';
 import { LoginComponent } from './modulos/login/login.component';
 import { NoEncontroComponent } from './modulos/no-encontro/no-encontro.component';
+import { PedidoinsertarComponent } from './modulos/pedidoinsertar/pedidoinsertar.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { NoEncontroComponent } from './modulos/no-encontro/no-encontro.component
     SoporteComponent,
     CompraComponent,
     LoginComponent,
-    NoEncontroComponent
+    NoEncontroComponent,
+    PedidoinsertarComponent
   ],
   imports: [
     BrowserModule,

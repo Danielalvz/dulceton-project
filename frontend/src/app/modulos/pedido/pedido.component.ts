@@ -49,6 +49,7 @@ export class PedidoComponent {
   botonesForm = false;
   deshabilitarEdicion = false;
   botonCancelar = false;
+  botonGuardarDetalle = false;
 
   constructor(private sventa: VentaService, private sdetalle: DetalleVentaService, private scliente: ClienteService, private susuario: UsuarioService, private sproducto: ProductoService) { }
 
@@ -172,6 +173,7 @@ export class PedidoComponent {
   }
 
   cancelarDetalle(detalle: any) {
+    this.botonGuardarDetalle = false;
     const index = this.obj_ventas.detalles.indexOf(detalle);
     console.log("ID VENTA EN CANCELAR", this.idVenta);
 
@@ -209,6 +211,7 @@ export class PedidoComponent {
   }
 
   async guardarDetallesVenta(idVenta: number) {
+    this.botonGuardarDetalle = false;
 
     const detallesConIdVenta = this.obj_ventas.detalles.map((detalle) => ({
       ...detalle,
@@ -221,8 +224,9 @@ export class PedidoComponent {
 
     }
 
-    this.limpiar();
     this.consulta();
+    this.limpiar();
+    
   }
 
   validarVenta(funcion: any) {
@@ -254,6 +258,7 @@ export class PedidoComponent {
     if (this.validar_iva && this.validar_fecha && this.validar_fo_cliente && this.validar_fo_usuario && this.validar_fo_producto && funcion == "editarDetalle") {
       this.deshabilitarEdicion = false;
       this.editarDetalles();
+      this.botonGuardarDetalle = false;
       alert("Detalle editado");
     }
 
@@ -339,6 +344,8 @@ export class PedidoComponent {
   }
 
   eliminarDetalle(id_detalle_venta: number) {
+    this.botonGuardarDetalle = false;
+
     const id_numero = Number(id_detalle_venta);
 
     if (typeof id_numero === 'number') {
@@ -408,6 +415,7 @@ export class PedidoComponent {
 
   cargarDetalle(detalle: any) {
     this.deshabilitarEdicion = true;
+    this.botonGuardarDetalle = true;
 
     this.nuevoDetalle = {
       producto: detalle.producto,

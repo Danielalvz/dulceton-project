@@ -1,23 +1,27 @@
-<p>compra works!</p>
+
 <hr>
 <!-- <button class="btn btn-warning" (click)="mostrarForm('ver')">Insertar compra</button> -->
-<button class="btn btn-warning" (click)="mostrarForm('ver')">Insertar compra</button>
-<form *ngIf="mform == true">
+<div class="row">
+  <button class="btn btn-warning m-auto" style="min-width: 300px;" (click)="mostrarForm('ver')">Insertar compra</button>
+</div>
+<form *ngIf="mform == true" class="w-75 m-auto">
   <h1 *ngIf="botonesForm">Editar Compra</h1>
   <!-- Compra -->
-  <div class="row">
-    <div class="col-lg-4">
+  <div class="row mt-4 m-auto">
+    <div class="col-lg-6">
       <label for="fecha">Fecha</label>
       <input type="date" id="fecha" class="form-control" placeholder="Fecha de la compra"
         [(ngModel)]="obj_compras.fecha" name="fecha">
       <span style="color: red;" class="error" *ngIf="validar_fecha == false">Ingrese la fecha</span>
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-6">
       <label>IVA</label>
       <input type="number" id="iva" class="form-control" placeholder="IVA (%)" [(ngModel)]="obj_compras.iva" name="iva">
       <span style="color: red;" class="error" *ngIf="!validar_iva">Ingrese un IVA válido</span>
     </div>
-    <div class="col-lg-4">
+  </div>
+  <div class="row mt-4 m-auto">
+    <div class="col-lg-6">
       <label>Proveedor</label>
       <select id="fo_proveedor" class="form-control form-select" [(ngModel)]="obj_compras.fo_proveedor"
         name="proveedor">
@@ -27,7 +31,7 @@
       </select>
       <span class="error" *ngIf="validar_fo_proveedor == false">Seleccione proveedor</span>
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-6">
       <label>Usuario</label>
       <select id="fo_usuario" class="form-control form-select" [(ngModel)]="obj_compras.fo_usuario" name="usuario">
         <option [ngValue]="0" label="Seleccione Usuario" selected="selected">Seleccione Usuario</option>
@@ -37,10 +41,11 @@
       <span class="error" *ngIf="validar_fo_usuario == false">Seleccione usuario</span>
     </div>
   </div>
+
+  <h3>Agregar Detalle</h3>
   <!-- Detalles -->
   <div class="row">
-    <div class="col-lg-4">
-      <h3>Agregar Detalle</h3>
+    <div class="col-lg-12">
       <label>Producto</label>
       <select id="fo_producto" class="form-control form-select" [(ngModel)]="nuevoDetalle.fo_producto" name="producto">
         <option [ngValue]="0" label="Seleccione Producto" selected="selected">Seleccione Producto</option>
@@ -49,71 +54,75 @@
       </select>
       <span class="error" *ngIf="!validar_fo_producto">Seleccione un producto</span>
     </div>
-    <div class="col-lg-4">
+  </div>
+  <div class="row mt-4">
+    <div class="col-lg-6">
       <label>Cantidad</label>
       <input type="number" placeholder="Cantidad" class="form-control" [(ngModel)]="nuevoDetalle.cantidad"
         name="cantidad">
       <span style="color: red;" class="error" *ngIf="!validar_cantidad">Ingrese una cantidad
         válida</span>
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-6">
       <label>Precio</label>
       <input type="number" class="form-control" [(ngModel)]="nuevoDetalle.precio" name="precio">
       <span class="error" *ngIf="!validar_precio">Ingrese un precio válido</span>
     </div>
   </div>
-  <button class="btn btn-primary mt-2" (click)="agregarDetalle()">Agregar producto</button>
 
-  <h3>Detalles Agregados</h3>
-  <table class="table table-striped">
-      <thead>
-          <tr>
-              <th>Producto</th>
-              <th>Cantidad</th>
-              <th>Precio</th>
-              <th>Total</th>
-              <th>Acciones</th>
-          </tr>
-      </thead>
-      <tbody>
-          <tr *ngFor="let detalle of obj_compras.detalles">
-              <td>{{ detalle.producto }}</td>
-              <td>{{ detalle.cantidad }}</td>
-              <td>{{ detalle.precio }}</td>
-              <td>{{ detalle.cantidad * detalle.precio }}</td>
-              <td>
-                  <button (click)="cargarDetalle(detalle)" [disabled]="deshabilitarEdicion">Editar</button>
-                  <button (click)="cancelarDetalle(detalle)" *ngIf="botonCancelar">Cancelar</button>
-                  <button (click)="eliminarDetalle(detalle.id_detalle_compra)">Eliminar</button>
-              </td>
-          </tr>
-      </tbody>
-  </table>
-  <!-- Detalles Agregados -->
-  <div>
-    <h3>Detalles Agregados</h3>
-    <ul>
-      <li *ngFor="let detalle of obj_compras.detalles">
-        <p>Detalle ID: {{ detalle.id_detalle_compra }}</p> 
-        Producto ID: {{ detalle.fo_producto }}, Cantidad: {{ detalle.cantidad }}, Precio: {{ detalle.precio }}
-        Producto: {{ detalle.producto}}, Cantidad: {{ detalle.cantidad }}, Precio: {{ detalle.precio }}
-
-        
-        <button (click)="cargarDetalle(detalle)" [disabled]="deshabilitarEdicion">Editar</button>
-        <button (click)="cancelarDetalle(detalle)">Cancelar</button>
-        <button (click)="eliminarDetalle(detalle.id_detalle_compra)" class="btn btn-danger btn-sm">Eliminar</button>
-      </li>
-    </ul>
+  <div class="row align-items-center justify-content-center m-auto">
+    <button class="btn btn-primary mt-4 col-lg-4" (click)="agregarDetalle()">Agregar producto</button>
   </div>
 
 
-  <button (click)="validarCompra('editarDetalle')">Guardar detalle</button>
 
-  <button type="submit" class="btn btn-primary mt-2" (click)="validarCompra('guardar')" *ngIf="!botonesForm">Guardar
-    Compra</button>
-  <input type="button" value="Editar" class="btn btn-primary" style="width: 100%;" (click)="validarCompra('editar')"
-    *ngIf="botonesForm">
-  <button value="Cancelar" class="btn btn-secondary" (click)="mostrarForm('ocultar')">Cancelar</button>
+  <h3 class="text-center">Detalles Agregados</h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Precio</th>
+        <th>Total</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let detalle of obj_compras.detalles">
+        <td>{{ detalle.id_detalle_compra }}</td>
+        <td>{{ detalle.producto }}</td>
+        <td>{{ detalle.cantidad }}</td>
+        <td>{{ detalle.precio }}</td>
+        <td>{{ detalle.cantidad * detalle.precio }}</td>
+        <td>
+          <button class="btn btn-primary btn-sm" (click)="cargarDetalle(detalle)" [disabled]="deshabilitarEdicion">Editar</button>
+          <button class="btn btn-secondary btn-sm" (click)="cancelarDetalle(detalle)" *ngIf="botonCancelar">Cancelar</button>
+          <button class="btn btn-danger btn-sm" (click)="eliminarDetalle(detalle.id_detalle_compra)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <div class="row" *ngIf="botonGuardarDetalle">
+    <div class="col-lg-12 d-flex justify-content-between align-items-center">
+      <h6>Para guardar los cambios del producto editado:</h6>
+      <button class="btn btn-primary mt-2 col-lg-6" style="max-width: 200px;"
+        (click)="validarCompra('editarDetalle')">Guardar detalle</button>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <button type="submit" class="btn btn-primary mt-2 col-lg-6" (click)="validarCompra('guardar')"
+      *ngIf="!botonesForm">Guardar
+      Compra</button>
+    <input type="button" value="Editar" class="btn btn-primary mt-2 col-lg-6" style="width: 100%;"
+      (click)="validarCompra('editar')" *ngIf="botonesForm">
+    <button value="Cancelar" class="btn btn-secondary mt-2 col-lg-6" (click)="mostrarForm('ocultar')">Cancelar</button>
+  </div>
+
+
 </form>
 
 <div id="tabla">

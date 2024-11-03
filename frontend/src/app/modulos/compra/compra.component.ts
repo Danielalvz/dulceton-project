@@ -49,6 +49,7 @@ export class CompraComponent {
   botonesForm = false;
   deshabilitarEdicion = false;
   botonCancelar = false;
+  botonGuardarDetalle = false;
 
   constructor(private scompras: CompraService, private sdetalle: DetalleCompraService, private sproveedor: ProveedorService, private susuario: UsuarioService, private sproducto: ProductoService) { }
 
@@ -129,46 +130,47 @@ export class CompraComponent {
   }
 
   agregarDetalle() {
-    // Verifica que el detalle tiene datos válidos antes de agregarlo
     if (this.nuevoDetalle.fo_producto > 0 && this.nuevoDetalle.cantidad > 0 && this.nuevoDetalle.precio > 0) {
+      const productoEncontrado = this.productos.find(prod => prod.id_producto === this.nuevoDetalle.fo_producto);
+      if (productoEncontrado) {
+        this.nuevoDetalle.producto = productoEncontrado.nombre;
+      } else {
+        console.error("Producto no encontrado o productos aún no ha cargado.");
+      }
+      
       if (this.idCompra > 0) {
         this.botonCancelar = false;
-        // Modo edición: la compra ya existe, se guarda el detalle directamente en la base de datos
         const detalleNuevo = {
           fo_producto: this.nuevoDetalle.fo_producto,
           producto: this.productos.find(prod => prod.id_producto === this.nuevoDetalle.fo_producto)?.nombre,
           cantidad: this.nuevoDetalle.cantidad,
           precio: this.nuevoDetalle.precio,
-          fo_compras: this.idCompra // Asocia el detalle a la compra existente
+          fo_compras: this.idCompra
         };
 
-        console.log(detalleNuevo);
-        
+        console.log("DETALLENUEVO", detalleNuevo);
 
         // Llama al servicio para insertar el detalle en la base de datos
         this.sdetalle.insertarDetalleCompra(detalleNuevo).subscribe({
           next: (respuesta) => {
-            console.log("Nuevo detalle agregado a compra existente:", respuesta);
+            console.log("Nuevo detalle agregado a venta existente:", respuesta);
 
-            // Refresca la lista de detalles para mostrar el nuevo
             this.consulta();
 
-            // Actualiza `obj_compras.detalles` con el detalle recién agregado
-            this.obj_compras.detalles.push(respuesta); // Asegura que `respuesta` contiene el nuevo detalle con ID
+            this.obj_compras.detalles.push(respuesta);
+            this.consulta();
 
-            console.log("OBJETO COMRPAS");
-            console.log(this.obj_compras.detalles);
-            
-            
             this.nuevoDetalle = { producto: "", fo_producto: 0, cantidad: 0, precio: 0 };
 
           },
           error: (err) => console.error("Error al agregar detalle:", err)
         });
       } else {
-        // Modo creación: solo agrega el detalle temporalmente a `obj_compras.detalles`
         console.log("Agregando nuevo detalle en modo creación.");
         this.botonCancelar = true;
+        console.log(this.nuevoDetalle);
+        console.log(this.obj_compras.detalles);
+
         this.obj_compras.detalles.push({ ...this.nuevoDetalle });
         this.nuevoDetalle = { producto: "", fo_producto: 0, cantidad: 0, precio: 0 };
       }
@@ -179,6 +181,8 @@ export class CompraComponent {
 
 
   cancelarDetalle(detalle: any) {
+    this.botonGuardarDetalle = false;
+
     const index = this.obj_compras.detalles.indexOf(detalle);
     console.log("ID COMPRA EN CANCELAR", this.idCompra);
 
@@ -286,6 +290,7 @@ export class CompraComponent {
 
     if (this.validar_iva && this.validar_fecha && this.validar_fo_proveedor && this.validar_fo_usuario && this.validar_fo_producto && funcion == "editarDetalle") {
       this.deshabilitarEdicion = false;
+      this.botonGuardarDetalle = false;
       this.editarDetalles();
       alert("Compra editada");
     }
@@ -379,6 +384,7 @@ export class CompraComponent {
 
   // Método para eliminar un detalle
   eliminarDetalle(id_detalle_compra: number) {
+    this.botonGuardarDetalle = false;
     const id_numero = Number(id_detalle_compra);
     console.log("ID Detalle a eliminar:", id_numero);
     console.log("Tipo de id_detalle_compra:", typeof id_numero); // Esto debe ser "number"
@@ -465,6 +471,7 @@ export class CompraComponent {
   }
 
   cargarDetalle(detalle: any) {
+    this.botonGuardarDetalle = true;
     this.deshabilitarEdicion = true;
 
     this.nuevoDetalle = {
